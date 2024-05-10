@@ -19,6 +19,7 @@
         <link href="{{url('assets')}}//css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
         @yield('css')
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     </head>
 
@@ -374,7 +375,29 @@
 
         <!-- dashboard init -->
         {{-- <script src="{{url('assets')}}//js/pages/dashboard.init.js"></script> --}}
-
+        <script>
+            
+        function confirmDelete(e, modalSubmit, callback) {
+            var isSubmit = modalSubmit === undefined ? true : false;
+            // console.log(isSubmit);
+            var self = e;
+            var deleteMessage = self.getAttribute('data-confirm') ? self.getAttribute('data-confirm') : 'Delete data\ ?';
+            Swal.fire({
+                icon: 'question',
+                title: 'Apakah Anda Yakin?',
+                text: deleteMessage,
+                showCancelButton: true,
+                confirmButtonText: 'Ya, yakin!',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    self.submit();
+                } else if (result.isDenied) {
+                    callback(true);
+                }
+            });
+        }
+            </script>
         @yield('js')
         <!-- App js -->
         {{-- <script src="{{url('assets')}}//js/app.js"></script> --}}

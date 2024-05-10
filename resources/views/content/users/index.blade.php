@@ -80,17 +80,9 @@
                     data: 'no_telepon',
                 } , {
                     data: 'role',
-                },
-                       {
+                },{
                     data: 'action',
-                    render: function(data, type, row) {
-                        var action = "";
-                        action += "<a type='button' class='btn btn-sm btn-warning editBtn' id='editBtn' href='"+window.location.href+"/"+row['id']+"/edit'>Edit</a> ";
-                        action += "<a type='button' class='btn btn-sm btn-danger declineBtn' id='declineBtn' onclick='decline(" + row['id'] + ")'> Tolak </a>";
-                     
-    
-                        return action;
-                    }
+                   
                 },
                 
             ]
