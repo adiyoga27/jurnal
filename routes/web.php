@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
@@ -13,4 +14,5 @@ Route::post('auth/logout', [AuthController::class, 'logout']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [HomeController::class, 'index']); 
+    Route::resource('user', UserController::class);
 });

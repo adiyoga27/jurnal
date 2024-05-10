@@ -18,6 +18,8 @@
         <!-- App Css-->
         <link href="{{url('assets')}}//css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
+        @yield('css')
+
     </head>
 
     <body data-sidebar="dark">
@@ -125,7 +127,7 @@
                                 </a>
                                 <ul class="sub-menu" aria-expanded="true">
                                     <li>
-                                        <a href="javascript: void(0);"  key="t-vertical">User</a>
+                                        <a href="{{url('user')}}"  key="t-vertical">User</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
                                     <li>
@@ -371,10 +373,12 @@
         <script src="{{url('assets')}}//libs/apexcharts/apexcharts.min.js"></script>
 
         <!-- dashboard init -->
-        <script src="{{url('assets')}}//js/pages/dashboard.init.js"></script>
+        {{-- <script src="{{url('assets')}}//js/pages/dashboard.init.js"></script> --}}
 
+        @yield('js')
         <!-- App js -->
-        <script src="{{url('assets')}}//js/app.js"></script>
+        {{-- <script src="{{url('assets')}}//js/app.js"></script> --}}
+
     </body>
 
 </html>

@@ -1,14 +1,19 @@
 @extends('layouts.admin')
+@section('css')
+<link href="{{ url('assets') }}/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ url('assets') }}/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ url('assets') }}/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+@endsection
 @section('content')
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-            <h4 class="mb-sm-0 font-size-18">Iklan</h4>
+            <h4 class="mb-sm-0 font-size-18">User</h4>
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Data</a></li>
-                    <li class="breadcrumb-item active">Iklan</li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Data Master</a></li>
+                    <li class="breadcrumb-item active">User</li>
 
                 </ol>
             </div>
@@ -21,23 +26,24 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Data Iklan</h4>
+                <h4 class="card-title">Data User</h4>
                 <table id="tableData" class="table table-bordered dt-responsive  nowrap w-100">
                     <thead>
                         <tr>
+                            <th>Nama</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Hp</th>
+                            <th>Role</th>
                             <th>Action</th>
-                            <th>Date</th>
-                            <th>Member</th>
-                            <th>Deskripsi</th>
-                            <th>Harga</th>
-                            <th>Image</th>
-                            <th>Note</th>
 
                         </tr>
                     </thead>
                 </table>
             </div>
+            
         </div>
+        <a type="button" href="{{url('user/create')}}" class="btn btn-primary waves-effect btn-label waves-light"><i class="bx bx-plus-medical label-icon"></i> Tambah</a>
     </div> <!-- end col -->
 
 </div> <!-- end row -->
@@ -46,6 +52,9 @@
 <!-- end row -->
 @endsection
 @section('js')
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+
 <script>
     var table;
     $(document).ready(function() {
@@ -60,47 +69,29 @@
                 }
             },
             columns: [
+        
                 {
+                    data: 'nama',
+                }, {
+                    data: 'username',
+                }, {
+                    data: 'email',
+                }, {
+                    data: 'no_telepon',
+                } , {
+                    data: 'role',
+                },
+                       {
                     data: 'action',
                     render: function(data, type, row) {
                         var action = "";
-                        if (row['validated'] == 'pending') {
-                            action += "<a type='button' class='btn btn-warning editBtn' id='editBtn' href='"+window.location.href+"/"+row['id']+"/edit'>Edit</a> ";
-
-                            action += "<a type='button' class='btn btn-success approveBtn' id='approveBtn' onclick='approve(" + row['id'] + ")'>Approve</a> ";
-            
-                            action += "<a type='button' class='btn btn-danger declineBtn' id='declineBtn' onclick='decline(" + row['id'] + ")'> Tolak </a>";
-                        }else{
-                            action += "-";
-                        }
-                        
-                        // if (row['validated'] == 'pending' || row['validated'] == 'decline') {
-                        //     action += "<a type='button' class='btn btn-warning editBtn' id='editBtn' href='"+window.location.href+"/"+row['id']+"/edit'>Edit</a> ";
-
-                        //     action += "<a type='button' class='btn btn-success approveBtn' id='approveBtn' onclick='approve(" + row['id'] + ")'>Approve</a> ";
-                        // }
-                        // if (row['validated'] == 'pending' || row['validated'] == 'accept') {
-                        //     action += "<a type='button' class='btn btn-danger declineBtn' id='declineBtn' onclick='decline(" + row['id'] + ")'> Tolak </a>";
-                        // }
+                        action += "<a type='button' class='btn btn-sm btn-warning editBtn' id='editBtn' href='"+window.location.href+"/"+row['id']+"/edit'>Edit</a> ";
+                        action += "<a type='button' class='btn btn-sm btn-danger declineBtn' id='declineBtn' onclick='decline(" + row['id'] + ")'> Tolak </a>";
+                     
+    
                         return action;
                     }
                 },
-                {
-                    data: 'date',
-                }, {
-                    data: 'member',
-                }, {
-                    data: 'description',
-                }, {
-                    data: 'amount',
-                }, {
-                    data: 'image',
-                    render: function(data, type, row) {
-                        return '<a href="{{url("storage")}}/' + data + '" target="_blank" rel="noopener noreferrer"><img src="{{url("storage")}}/' + data + '" width="100px" height="100px" /></a>';
-                    }
-                },{
-                    data: 'decline_note',
-                }
                 
             ]
         });
