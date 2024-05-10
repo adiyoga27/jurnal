@@ -58,8 +58,8 @@
                                     </a>
                                 </div>
                                 <div class="p-2">
-                                    <form class="form-horizontal" action="index.html">
-        
+                                    <form class="form-horizontal" action="{{url('auth/verify')}}" method="POST">
+        @csrf
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
                                             <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
@@ -79,7 +79,13 @@
                                                 Remember me
                                             </label>
                                         </div>
-                                        
+                                        <div class="mt-3">
+                                            @foreach ($errors->all() as $error)
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ $error }}
+                                            </div>
+                                             @endforeach
+                                        </div>
                                         <div class="mt-3 d-grid">
                                             <button class="btn btn-primary waves-effect waves-light" type="submit">Log In</button>
                                         </div>
