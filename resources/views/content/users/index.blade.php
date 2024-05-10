@@ -16,21 +16,7 @@
     </div>
 </div>
 <!-- end page title -->
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <label>Status </label>
-                <select class="form-control find" id="find">
-                    <option value="pending">Pending</option>
-                    <option value="accept">Valid</option>
-                    <option value="decline">Tidak Valid</option>
 
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-12">
         <div class="card">
