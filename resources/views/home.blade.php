@@ -86,3 +86,8 @@
 
                 
 @endsection
+@section('js')
+    
+        <!-- apexcharts -->
+        <script src="{{url('assets')}}//libs/apexcharts/apexcharts.min.js"></script>
+@endsection

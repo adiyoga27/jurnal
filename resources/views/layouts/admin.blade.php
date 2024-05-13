@@ -8,6 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesbrand" name="author" />
+        
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{url('assets')}}//images/favicon.ico">
 
@@ -17,6 +19,7 @@
         <link href="{{url('assets')}}//css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="{{url('assets')}}//css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <link href="{{ url('assets') }}/extra-libs/toastr/dist/build/toastr.min.css" rel="stylesheet">
 
         @yield('css')
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -114,7 +117,7 @@
                             <li class="menu-title" key="t-menu">Menu</li>
 
                             <li>
-                                <a href="javascript: void(0);" class="waves-effect">
+                                <a href="{{ url('/')}}" class="waves-effect">
                                     <i class="bx bx-home-circle"></i>
                                     <span key="t-dashboards">Dashboards</span>
                                 </a>
@@ -136,10 +139,10 @@
                                     </li>
                                     @endif
                                     <li>
-                                        <a href="javascript: void(0);"  key="t-vertical">Akun</a>
+                                        <a href="{{url('akun')}}"  key="t-vertical">Akun</a>
                                     </li>
                                     <li>
-                                        <a href="javascript: void(0);"  key="t-vertical">Produk</a>
+                                        <a href="{{url('product')}}"  key="t-vertical">Produk</a>
                                     </li>
                                     <li>
                                         <a href="javascript: void(0);"  key="t-vertical">Pemasukan</a>
@@ -370,13 +373,37 @@
         <script src="{{url('assets')}}//libs/simplebar/simplebar.min.js"></script>
         <script src="{{url('assets')}}//libs/node-waves/waves.min.js"></script>
 
-        <!-- apexcharts -->
-        <script src="{{url('assets')}}//libs/apexcharts/apexcharts.min.js"></script>
+        <script src="{{ url('assets') }}/extra-libs/toastr/dist/build/toastr.min.js"></script>
+        <script src="{{ url('assets') }}/extra-libs/toastr/toastr-init.js"></script>
 
         <!-- dashboard init -->
         {{-- <script src="{{url('assets')}}//js/pages/dashboard.init.js"></script> --}}
         <script>
-            
+
+        @if ($errors->any()) 
+            @foreach($errors->all() as $error)
+            toastr.error("{{ $error }}", "Error", {
+                "progressBar": true
+            });    
+            @endforeach
+        @endif
+        
+        @if (Session::has('success'))
+            toastr.success("{{ Session::get('success') }}", "Success", {
+                "progressBar": true
+            });
+        @endif
+        @if (Session::has('error'))
+        toastr.error("{{ Session::get('error') }}", "Error", {
+                "progressBar": true
+            });
+          
+        @endif
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         function confirmDelete(e, modalSubmit, callback) {
             var isSubmit = modalSubmit === undefined ? true : false;
             // console.log(isSubmit);

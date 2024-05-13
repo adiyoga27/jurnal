@@ -1,7 +1,7 @@
 <form action="{{ isset($delete) ? $delete : '/' }}" method="POST" data-confirm="{{ $confirm_message ?? '' }}" onsubmit="event.preventDefault(); return confirmDelete(this)">
      @if (isset($delete))
+     @csrf
         @method('DELETE')
-        @csrf
         <button type="submit" class="btn btn-sm btn-danger" title="Hapus Data"><i class="mdi mdi-delete-sweep"></i>
             Hapus</button>
     @endif
