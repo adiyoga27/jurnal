@@ -30,6 +30,10 @@ class TransactionController extends Controller
                         'padding' => '85px',
                     ]);
                 })
+                
+                ->addColumn('total', function ($data) {
+                    return "Rp".number_format($data->total,0,",","."); 
+                })
                 ->addColumn('paid_at', function ($data) {
                     return Carbon::parse($data->paid_at)->format('d M Y');   
                 })
@@ -55,7 +59,6 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
     
-       
         try {
             DB::beginTransaction();
             $transaction = Transaction::create([

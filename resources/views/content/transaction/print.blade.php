@@ -1,28 +1,24 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Dashboard | {{ Auth::user()->role }} </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="Themesbrand" name="author" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ url('assets') }}//images/favicon.ico">
-    <!-- Bootstrap Css -->
-    <link href="{{ url('assets') }}//css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="{{ url('assets') }}//css/icons.min.css" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="{{ url('assets') }}//css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-    <link href="{{ url('assets') }}/extra-libs/toastr/dist/build/toastr.min.css" rel="stylesheet">
-    @yield('css')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body data-sidebar="dark">
-    <div class="container center">
-        <div class="col-md-12">
-            <div class="container-fluid">
+@extends('layouts.admin')
+@section('css')
+<link href="{{ url('assets') }}/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ url('assets') }}/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ url('assets') }}/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+@endsection
+@section('content')
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0 font-size-18">Detail Transaction</h4>
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Data Master</a></li>
+                                    <li class="breadcrumb-item ">Transaction</li>
+                                    <li class="breadcrumb-item active">{{$data->noinvoice}}</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -90,7 +86,7 @@
                                                     <strong>Total</strong>
                                                 </td>
                                                 <td class="border-0 text-end">
-                                                    <h4 class="m-0">$1410.00</h4>
+                                                    <h4 class="m-0">Rp{{ number_format($data->total,0,",",".")}}</h4>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -113,6 +109,48 @@
                 <!-- end row -->
             </div>
         </div>
-    </div>
-</body>
-</html>
+    @endsection
+    @section('js')
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        var table;
+        $(document).ready(function() {
+            table = $('#tableData').DataTable({
+                scrollX: true,
+                ajax: {
+                    "url": window.location.href,
+                    "type": "GET",
+                    "dataType": "JSON",
+                    "data": function(data) {
+                        data.status = $('#find').val();
+                    }
+                },
+                sorting: [
+                    [0, 'desc']
+                ],
+                columns: [
+                    {
+                        data: 'paid_at',
+                    
+                    }, {
+                        data: 'noinvoice',
+    
+                    }, {
+                        data: 'customer_name',
+                    },{
+                        data: 'customer_phone',
+                    },{
+                        data: 'total',
+                    },{
+                        data: 'action',
+                        sorting: false
+                    },
+                ]
+            });
+            $('#find').change(function() {
+                table.ajax.reload();
+            });
+        })
+    </script>
+    @endsection

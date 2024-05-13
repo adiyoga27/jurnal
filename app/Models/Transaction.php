@@ -25,7 +25,8 @@ class Transaction extends Model
     {
         static::created(function ($model) {
             $date = Carbon::now();
-            $uniqueID = 10000+(Transaction::whereBetween('created_at', [$date->copy()->startOfDay(), $date->copy()->endOfDay()])->count())+1;
+            $trx = Transaction::whereBetween('created_at', [$date->copy()->startOfDay(), $date->copy()->endOfDay()])->withTrashed()->get();
+            $uniqueID = 10000+$trx->count()+1;
             $noinvoice = "INV".Carbon::now()->format('Ymd').sprintf('%04d', $uniqueID);
             $model->update([
                 'noinvoice' => $noinvoice,

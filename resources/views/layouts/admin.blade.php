@@ -135,7 +135,7 @@
                                     </li>
                                     @if (Auth::user()->role == 'admin')
                                     <li>
-                                        <a href="javascript: void(0);"  key="t-vertical">Karyawan</a>
+                                        <a href="{{url('employee')}}"  key="t-vertical">Karyawan</a>
                                     </li>
                                     @endif
                                     <li>
@@ -148,7 +148,7 @@
                                         <a href="{{url('transaction')}}"  key="t-vertical">Pemasukan</a>
                                     </li>
                                     <li>
-                                        <a href="javascript: void(0);"  key="t-vertical">Pengeluaran</a>
+                                        <a href="javascript: onGoing('Feature Data Master Pengeluaran');"  key="t-vertical">Pengeluaran</a>
                                     </li>
 
                                 </ul>
@@ -163,12 +163,12 @@
                                     <span key="t-ecommerce">Laporan</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="ecommerce-products.html" key="t-products">Jurnal Umum</a></li>
-                                    <li><a href="ecommerce-product-detail.html" key="t-product-detail">Buku Besar</a></li>
-                                    <li><a href="ecommerce-product-detail.html" key="t-product-detail">Arus Kas</a></li>
-                                    <li><a href="ecommerce-product-detail.html" key="t-product-detail">Perubahan Modal</a></li>
-                                    <li><a href="ecommerce-product-detail.html" key="t-product-detail">Neraca</a></li>
-                                    <li><a href="ecommerce-product-detail.html" key="t-product-detail">Laba Rugi</a></li>
+                                    <li><a href="javascript: onGoing('Feature Laporan Jurnal');" key="t-products">Jurnal Umum</a></li>
+                                    <li><a href="javascript: onGoing('Feature Laporan Buku Besar');" key="t-product-detail">Buku Besar</a></li>
+                                    <li><a href="javascript: onGoing('Feature Laporan Arus Kas');" key="t-product-detail">Arus Kas</a></li>
+                                    <li><a href="javascript: onGoing('Feature Laporan Perubahaan Modal');" key="t-product-detail">Perubahan Modal</a></li>
+                                    <li><a href="javascript: onGoing('Feature Laporan Neraca');" key="t-product-detail">Neraca</a></li>
+                                    <li><a href="javascript: onGoing('Feature Laporan Laba Rugi');" key="t-product-detail">Laba Rugi</a></li>
                                   
                                 </ul>
                             </li>
@@ -424,10 +424,20 @@
                 }
             });
         }
+
+
+        function onGoing(title) {
+            Swal.fire({
+                title: "Feature Belum Tersedia!",
+                html: "Mohon tunggu update feature <b>"+title+"</b> selanjutnya yaa!",
+                icon: "error"
+                });
+        }
             </script>
         @yield('js')
         <!-- App js -->
         {{-- <script src="{{url('assets')}}//js/app.js"></script> --}}
+
 
     </body>
 

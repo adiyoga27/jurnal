@@ -5,12 +5,12 @@
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-            <h4 class="mb-sm-0 font-size-18">Edit Produk</h4>
+            <h4 class="mb-sm-0 font-size-18">Edit Karywan</h4>
 
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="javascript: void(0);">Data Master</a></li>
-                    <li class="breadcrumb-item">Produk</li>
+                    <li class="breadcrumb-item">Karywan</li>
 
                     <li class="breadcrumb-item active">Edit Data</li>
                 </ol>
@@ -26,15 +26,15 @@
         <div class="card">
             <div class="card-body">
 
-                <h4 class="card-title">Form Produk</h4>
-                <p class="card-title-desc">Input Data Produk </p>
+                <h4 class="card-title">Form Karywan</h4>
+                <p class="card-title-desc">Input Data Karywan </p>
                 <hr>
-                <form method="POST" action="{{route('product.update', $data->id)}}" enctype="multipart/form-data">
+                <form method="POST" action="{{route('employee.update', $data->id)}}" enctype="multipart/form-data">
                     @method('PUT')
 
 
                     @csrf
-                    @include('content.product.form._form')
+                    @include('content.employee.form._form')
 
                 </form>
 

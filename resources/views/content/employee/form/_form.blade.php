@@ -1,41 +1,56 @@
 <div class="mb-3 row">
-    <label for="example-text-input" class="col-md-2 col-form-label">Kode Produk</label>
+    <label for="example-text-input" class="col-md-2 col-form-label">Kode Karyawan</label>
     <div class="col-md-10">
-        <input class="form-control" type="text" value="{{ !empty($data) ? $data->kode_produk : old('kode_produk') }}" name="kode_produk" placeholder="Masukkan kode produk ... ">
-        {!! $errors->first('kode_produk', '<p class="text-danger">:message</p>') !!}
+        <input class="form-control" type="text" value="{{ !empty($data) ? $data->kode_karyawan : $nik }}" name="kode_karyawan" placeholder="Masukkan kode karyawan ... " readonly>
+        {!! $errors->first('kode_karyawan', '<p class="text-danger">:message</p>') !!}
     
     </div>
 </div>
 
 <div class="mb-3 row">
-    <label for="example-text-input" class="col-md-2 col-form-label">Nama Produk</label>
+    <label for="example-text-input" class="col-md-2 col-form-label">Nama</label>
     <div class="col-md-10">
-        <input class="form-control" type="text" value="{{ !empty($data) ? $data->nama_produk : old('nama_produk') }}" name="nama_produk" placeholder="Masukkan nama produk ... ">
-        {!! $errors->first('nama_produk', '<p class="text-danger">:message</p>') !!}
+        <input class="form-control" type="text" value="{{ !empty($data) ? $data->nama_karyawan : old('nama_karyawan') }}" name="nama_karyawan" placeholder="Masukkan nama karyawan ... ">
+        {!! $errors->first('nama_karyawan', '<p class="text-danger">:message</p>') !!}
         
     </div>
 </div>
 <div class="mb-3 row">
-    <label for="example-text-input" class="col-md-2 col-form-label">Harga Beli</label>
+    <label for="example-text-input" class="col-md-2 col-form-label">Hp</label>
     <div class="col-md-10">
-        <input class="form-control" type="text" value="{{ !empty($data) ? $data->harga_beli : old('harga_beli') }}" name="harga_beli" placeholder="Masukkan Harga Beli ... ">
-        {!! $errors->first('harga_beli', '<p class="text-danger">:message</p>') !!}
+        <input class="form-control" type="text" value="{{ !empty($data) ? $data->hp : old('hp') }}" name="hp" placeholder="Masukkan nomor hp ... ">
+        {!! $errors->first('hp', '<p class="text-danger">:message</p>') !!}
         
     </div>
 </div>
 <div class="mb-3 row">
-    <label for="example-text-input" class="col-md-2 col-form-label">Harga Jual</label>
+    <label for="example-text-input" class="col-md-2 col-form-label">Tgl Lahir</label>
     <div class="col-md-10">
-        <input class="form-control" type="text" value="{{ !empty($data) ? $data->harga_jual : old('harga_jual') }}" name="harga_jual" placeholder="Masukkan harga Jual ... ">
-        {!! $errors->first('harga_jual', '<p class="text-danger">:message</p>') !!}
+        <input class="form-control" type="date" value="{{ !empty($data) ? $data->tgl_lahir : old('tgl_lahir') }}" name="tgl_lahir" >
+        {!! $errors->first('tgl_lahir', '<p class="text-danger">:message</p>') !!}
         
     </div>
 </div>
 <div class="mb-3 row">
-    <label for="example-text-input" class="col-md-2 col-form-label">Upload Gambar</label>
+    <label for="example-text-input" class="col-md-2 col-form-label">Tgl Gabung</label>
     <div class="col-md-10">
-        <input class="form-control" type="file" name="image" >
-        {!! $errors->first('image', '<p class="text-danger">:message</p>') !!}
+        <input class="form-control" type="date" value="{{ !empty($data) ? $data->tgl_gabung : old('tgl_gabung') }}" name="tgl_gabung">
+        {!! $errors->first('tgl_gabung', '<p class="text-danger">:message</p>') !!}
+        
+    </div>
+</div>
+<div class="mb-3 row">
+    <label for="example-text-input" class="col-md-2 col-form-label">Alamat</label>
+    <div class="col-md-10">
+    <textarea class="form-control" name="alamat" style="height: 100px">{{ !empty($data) ? $data->alamat : old('alamat') }}</textarea>
+    {!! $errors->first('alamat', '<p class="text-danger">:message</p>') !!}
+    </div>
+</div>
+<div class="mb-3 row">
+    <label for="example-text-input" class="col-md-2 col-form-label">Upload Photo</label>
+    <div class="col-md-10">
+        <input class="form-control" type="file" name="photo" >
+        {!! $errors->first('photo', '<p class="text-danger">:message</p>') !!}
     
     </div>
 </div>

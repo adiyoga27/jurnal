@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-12">
                     <label for="example-text-input" class="col-md-2 col-form-label">Keterangan</label>
-                    <textarea class="form-control" name="keterangan" style="height: 100px"></textarea>
+                    <textarea class="form-control" name="keterangan" style="height: 100px">{{ !empty($data) ? $data->keterangan : old('keterangan') }}</textarea>
                     {!! $errors->first('keterangan', '<p class="text-danger">:message</p>') !!}
                 </div>
                 <div class="col-md-12 ">
