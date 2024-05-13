@@ -12,19 +12,13 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker\Factory::create();
+        $faker = \Faker\Factory::create();
         Product::create([
             'kode_produk' => 'P0001',
             'nama_produk' => 'Brand New Iphone 8',
             'harga_beli' => 100000,
             'harga_jual' => 150000,
-            'image' => $faker->imageUrl($width = 100, $height = 100, 'phone')            
-        ],[
-            'kode_produk' => 'P0001',
-            'nama_produk' => 'Brand New Iphone X',
-            'harga_beli' => 100000,
-            'harga_jual' => 150000,
-            'image' => $faker->imageUrl($width = 100, $height = 100, 'phone')            
+            'image' => 'images/product/'.$faker->image(storage_path('app/public/images/product'), 100, 100, 'phone', false)          
         ]);
     }
 }

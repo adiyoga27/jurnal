@@ -145,7 +145,7 @@
                                         <a href="{{url('product')}}"  key="t-vertical">Produk</a>
                                     </li>
                                     <li>
-                                        <a href="javascript: void(0);"  key="t-vertical">Pemasukan</a>
+                                        <a href="{{url('transaction')}}"  key="t-vertical">Pemasukan</a>
                                     </li>
                                     <li>
                                         <a href="javascript: void(0);"  key="t-vertical">Pengeluaran</a>
