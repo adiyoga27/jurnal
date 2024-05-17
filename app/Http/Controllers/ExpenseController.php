@@ -25,7 +25,7 @@ class ExpenseController extends Controller
                         'model' => $data,
                         'delete' => route('expense.destroy', $data->id),
                         'edit' => route('expense.edit', $data->id),
-                        'confirm_message' => 'Anda akan menghapus data "' . $data->nama_produk . '" ?',
+                        'confirm_message' => 'Anda akan menghapus data "' . $data->judul . '" ?',
                         'padding' => '85px',
                     ]);
                 })

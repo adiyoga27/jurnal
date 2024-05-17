@@ -12,7 +12,9 @@
         <select class="form-control" name="kode_akun" id="kode_akun">
             <option value="">Pilih Kode Akun</option>
             @foreach ($akuns as $akun)
-            <option value="{{$akun->id}}">{{$akun->kode_akun}} - {{$akun->nama_akun}}</option> 
+            <option @if ($data->kode_akun == $akun->id )
+                selected    @endif
+          value="{{$akun->id}}">{{$akun->kode_akun}} - {{$akun->nama_akun}}</option> 
             @endforeach
         </select>
         {!! $errors->first('kode_akun', '<p class="text-danger">:message</p>') !!}
