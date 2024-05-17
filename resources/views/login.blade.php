@@ -40,11 +40,11 @@
                                 </div>
                             </div>
                             <div class="card-body pt-0"> 
-                                <div class="auth-logo">
+                                {{-- <div class="auth-logo">
                                     <a href="index.html" class="auth-logo-light">
                                         <div class="avatar-md profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
-                                                <img src="{{url('assets')}}/images/logo-light.svg" alt="" class="rounded-circle" height="34">
+                                                <img src="{{url('assets')}}/images/logo-light.png" alt="" class="rounded-circle" height="34">
                                             </span>
                                         </div>
                                     </a>
@@ -52,23 +52,28 @@
                                     <a href="index.html" class="auth-logo-dark">
                                         <div class="avatar-md profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
-                                                <img src="{{url('assets')}}/images/logo.svg" alt="" class="rounded-circle" height="34">
+                                                <img src="{{url('assets')}}/images/logo.png" alt="" class="rounded-circle" height="34">
                                             </span>
                                         </div>
                                     </a>
+                                </div> --}}
+                                <div class="auth-logo mt-4 mb-4">
+                                    <center>
+                                    <img src="{{url('assets')}}/images/logo-dark.png" alt="" class="rounded-circle" width="50%">
+                                    </center>
                                 </div>
                                 <div class="p-2">
                                     <form class="form-horizontal" action="{{url('auth/verify')}}" method="POST">
         @csrf
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
-                                            <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                                            <input type="text" class="form-control" name="username" id="username" value="{{old('username')}}" placeholder="Enter username">
                                         </div>
                 
                                         <div class="mb-3">
                                             <label class="form-label">Password</label>
                                             <div class="input-group auth-pass-inputgroup">
-                                                <input type="password" name="password" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
+                                                <input type="password" name="password" id="password" value="{{old('password')}}" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
                                                 <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
                                             </div>
                                         </div>
@@ -102,7 +107,7 @@
                         <div class="mt-5 text-center">
                             
                             <div>
-                                <p>© <script>document.write(new Date().getFullYear())</script> Skote. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                <p>© <script>document.write(new Date().getFullYear())</script> Skote. Crafted with <i class="mdi mdi-heart text-danger"></i> by Wulandari</p>
                             </div>
                         </div>
 

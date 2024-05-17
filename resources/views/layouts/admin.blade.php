@@ -41,19 +41,19 @@
                         <div class="navbar-brand-box">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="{{url('assets')}}//images/logo.svg" alt="" height="22">
+                                    <img src="{{url('assets')}}/images/logo.png" alt="" height="50">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="{{url('assets')}}//images/logo-dark.png" alt="" height="17">
+                                    <img src="{{url('assets')}}/images/logo-dark.png" alt="" height="40">
                                 </span>
                             </a>
 
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="{{url('assets')}}//images/logo-light.svg" alt="" height="22">
+                                    <img src="{{url('assets')}}/images/logo-light.png" alt="" height="50">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="{{url('assets')}}//images/logo-light.png" alt="" height="19">
+                                    <img src="{{url('assets')}}/images/logo-light.png" alt="" height="40">
                                 </span>
                             </a>
                         </div>
@@ -91,7 +91,10 @@
                                 <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Profile</span></a>
                                 <a class="dropdown-item" href="#"><i class="bx bx-lock-open font-size-16 align-middle me-1"></i> <span key="t-lock-screen">Lock screen</span></a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></a>
+                                <form action="{{url('auth/logout')}}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger" type="submit"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></button>
+                                </form>
                             </div>
                         </div>
 
@@ -148,15 +151,11 @@
                                         <a href="{{url('transaction')}}"  key="t-vertical">Pemasukan</a>
                                     </li>
                                     <li>
-                                        <a href="javascript: onGoing('Feature Data Master Pengeluaran');"  key="t-vertical">Pengeluaran</a>
+                                        <a href="{{url('expense')}}"  key="t-vertical">Pengeluaran</a>
                                     </li>
 
                                 </ul>
                             </li>
-
-                
-
-                    
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     <i class="bx bxs-bar-chart-alt-2"></i>

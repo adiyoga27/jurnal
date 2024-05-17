@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function verify(Request $request){
-        // $user = User::where('username', $request->username)->first();
         $credentials = $request->validate([
             'username' => ['required'],
             'password' => ['required'],
@@ -20,12 +19,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/'); // Redirect to the intended URL
         }
-        // if($user){
-        //     if(Hash::check($request->password, $user->password)){
-        //         $request->session()->put('user', $user);
-        //         return redirect('/');
-        //     }
-        // }
+
         return redirect()->back()->withErrors('Username atau password salah !!');
     }
     
