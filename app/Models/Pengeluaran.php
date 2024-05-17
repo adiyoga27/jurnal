@@ -16,4 +16,7 @@ class Pengeluaran extends Model
         'keterangan',
         'nominal',
     ];
+    public function akun(){
+        return $this->hasOne(Akun::class, 'id', 'kode_akun');
+    }
 }

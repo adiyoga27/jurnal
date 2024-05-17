@@ -29,7 +29,9 @@ class ExpenseController extends Controller
                         'padding' => '85px',
                     ]);
                 })
-
+                ->addColumn('kode_akun', function ($data) {
+                    return $data->akun->kode_akun ."-".$data->akun->nama_akun;
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -76,7 +78,7 @@ class ExpenseController extends Controller
         $akuns = Akun::all();
 
         $data = Pengeluaran::find($id);
-        return view('content/employee/edit')->with(compact('data', 'akuns'));
+        return view('content/expense/edit')->with(compact('data', 'akuns'));
     }
 
     /**
