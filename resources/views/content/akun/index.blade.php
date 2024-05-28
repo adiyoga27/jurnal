@@ -31,7 +31,7 @@
                             <th>Kode</th>
                             <th>Sub Akun</th>
                             <th>Nama Akun</th>
-                            <th>Kategori</th>
+                            <th>Saldo</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -67,7 +67,7 @@
                 },{
                     data: 'nama_akun',
                 }, {
-                    data: 'kategori_akun',
+                    data: 'saldo',
                 },{
                     data: 'action',
                 },

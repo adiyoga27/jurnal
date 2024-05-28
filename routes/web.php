@@ -33,4 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('buku-besar', [ReportController::class, 'bukuBesar']);
     Route::post('buku-besar', [ReportController::class, 'bukuBesar']);
+
+    Route::get('perubahan-modal', [ReportController::class, 'perubahanModal']);
+    Route::post('perubahan-modal', [ReportController::class, 'perubahanModal']);
 });

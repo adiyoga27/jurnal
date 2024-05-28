@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Akun\AkunStoreRequest;
 use App\Models\Akun;
+use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -27,7 +28,10 @@ class AkunController extends Controller
                         'padding' => '85px',
                     ]);
                 })
-
+                ->addColumn('saldo', function ($data) {
+                    $saldo = Pengeluaran::where('kode_akun', $data->id)->sum('nominal');
+                    return number_format($saldo, 0, ',', '.');
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }

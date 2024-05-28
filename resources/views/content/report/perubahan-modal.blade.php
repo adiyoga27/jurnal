@@ -25,20 +25,7 @@
                         <h4 class="card-title">Cari Berdasarkan : </h4>
                         <hr>
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="mb-3 ">
-                                    <label for="example-text-input" class="col-md-2 col-form-label">Akun</label>
-                                    <select class="form-control" name="akun">
-                                        <option value="">Pilih Akun</option>
-                                        @foreach ($akuns as $akunt)
-                                            <option value="{{ $akunt->id }}" {{ $akunt->id == $akunID ? ' selected' : '' }}>{{ $akunt->nama_akun }}</option>
-                                        @endforeach
-
-                                    </select>
-
-                                </div>
-                            </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="mb-3 ">
                                     <label for="example-text-input" class="col-md-2 col-form-label">Tahun</label>
                                     <select class="form-control" name="year">
@@ -51,7 +38,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="mb-3 ">
                                     <label for="example-text-input" class="col-md-2 col-form-label">Bulan</label>
                                     <select class="form-control" name="month">
@@ -87,82 +74,50 @@
     </div> <!-- end row -->
 
     <div class="row">
-        <div class="col-12">
+        <div class="col-4"></div> 
+        <div class="col-4">
             <div class="card">
 
                 <div class="card-body">
                     <center>
-                        <h4>BUKU BESAR</h4>
+                        <h4>LAPORAN PERUBAHAN MODAL</h4>
                     </center>
                     <center>
                         <h4>PERIODE {{ \Carbon\Carbon::parse($year."-".$month."-01")->format('M') }} 2024</h4>
                     </center>
                     <hr>
-                    <table width="100%" id="tableData" class="table table-bordered dt-responsive  nowrap w-100"
-                        style="vertical-align: middle;">
-                        <thead>
-                            <tr>
-                                <th width="5%">Tanggal</th>
-                                <th width="5%">Keterangan</th>
-                                <th width="20%">Debit</th>
-                                <th width="20%">Kredit</th>
-                                <th width="20%">Saldo</th>
-                            </tr>
-                        </thead>
+                    <center>
+                    <table style="width: 80%; font-size:13pt"  id="tableData" class="  "
+                        style="vertical-align: top;">
+                      
                         <tbody>
-                            @if ($akunID == 1)
-                                
                             <tr>
-                                <td>{{ \Carbon\Carbon::parse($year."-".$month."-01")->format('d M') }}</td>
-                                <td>Saldo Sisa</td>
-                                <td></td>
-                                <td></td>
-                                
-                                <td>{{number_format($saldo, 0, ',', '.')}}</td>
+                                <td width="50%">Modal Awal</td>
+                                <td  style="text-align: end"> Rp. {{number_format($modal, 0,',','.')}}</td>
                             </tr>
-                            @endif
-                            @foreach ($datas as $index => $item)
-                            @php
-                                if ($index == 0 && $akunID != 1) {
-                                    if($item['kredit'] > 0){
-                                        $saldo = $item['debit'];
-                                    }else{
-                                        $saldo = $item['kredit'];
-                                    }
-                                }
-                            @endphp
-                                    <tr>
-                                        <td>{{ \Carbon\Carbon::parse($item['tanggal'])->format('d M') }}</td>
-                                        <td>{{ $item['keterangan'] }}</td>
-                                        <td>{{ $item['kredit'] > 0 ? number_format($item['kredit'], 0, ',', '.') : '' }}</td>
-                                        <td>{{ $item['debit'] > 0 ? number_format($item['debit'], 0, ',', '.') : '' }}</td>
-                                        <td>
-                                            @if ($index == 0 && $akunID != 1)
-                                                {{ number_format($saldo = $item['debit'], 0, ',', '.')  }}
-                                        
-                                            @else
-                                                @if ($akunID != 1)
-                                                {{ number_format($saldo = $saldo + $item['debit'], 0, ',', '.') }}
-                                                @else
-                                                @if ($item['kredit'] > 0)
-                                                    {{ number_format($saldo = $saldo + $item['kredit'], 0, ',', '.') }}
-                                                @else
-                                                    {{ number_format($saldo = $saldo - $item['debit'], 0, ',', '.')  }}
-                                                    @endif 
-                                                    @endif 
-                                            @endif
-
-                                    </td>
-
-                                    </tr>
-
-                                
-
-                           
-                            @endforeach
-                     
+                            <tr>
+                                <td>Laba Bersih</td>
+                                <td  style="text-align: end"> <u>Rp. {{number_format($laba, 0,',','.')}}</u></td>
+                            </tr>
+                            <tr >
+                                <td></td>
+                                <td  style="text-align: end"> Rp. {{number_format($modal+$laba, 0,',','.')}} </td>
+                            </tr>
+                            <tr height="30px">
+                                <td></td>
+                                <td  style="text-align: end"> </td>
+                            </tr>
+                            <tr style="margin-top: 100px">
+                                <td>Prive</td>
+                                <td  style="text-align: end"> <u>Rp. {{number_format($prive, 0,',','.')}}</u></td>
+                            </tr>
+                            <tr>
+                                <td>Modal Akhir</td>
+                                <td  style="text-align: end"> Rp. {{number_format($modal+$laba-$prive, 0,',','.')}}</td>
+                            </tr>
                         </tbody>
                     </table>
+                    </center>
 
                 </div>
             </div>

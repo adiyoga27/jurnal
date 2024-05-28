@@ -61,37 +61,49 @@ class ReportController extends Controller
     }
 
     function bukuBesar(Request $request)  {
-        $type = $request->kategori;
+        $akuns = Akun::all();
+        $akun = Akun::where('id', $request->akun)->first();
+        $akunID = $akun->id ?? 1;
         $month = isset($request->month)? $request->month : date('m');
         $year = isset($request->year)? $request->year : date('Y');
         $date = Carbon::parse($year."-".$month."-01");
+        $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
         $datas = [];
+
+        $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'debit');
+        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'kredit');
+        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        $saldo = $saldoDebit - $saldoKredit;
+
+        if($akunID == 1) {
+
         for ($i=1; $i <= $date->copy()->endOfMonth()->format('d') ; $i++) { 
             # code...
             $formatedDateSearch = $date->copy()->startOfMonth()->addDays($i-1)->format('Y-m-d');
             $totalsByKodeAkun = Pengeluaran::whereDate('tgl_transaksi', $formatedDateSearch)
             ->groupBy('kode_akun')
             ->selectRaw('kode_akun, SUM(nominal) as total_sum')
+            ->orderBy('id', 'asc')
             ->get();
+
             if(count($totalsByKodeAkun) >0 ){
-                $contents = [];
                 
-                $d = array(
-                    'tanggal' => $date->copy()->startOfMonth()->addDays($i-1)->format('d M'),
-                    'rows' => count($totalsByKodeAkun)
-                );
+            
                 foreach ($totalsByKodeAkun as $total) {
                         $akun = Akun::where('id', $total->kode_akun)->first();
                         if($akun->kategori_akun == 'debit'){
                          
-                            $contents[] = array(
+                            $datas[] = array(
                                 'tanggal' => $formatedDateSearch,
                                 'keterangan' => $akun->nama_akun,
                                 'debit' => 0,
                                 'kredit' => $total->total_sum,
                             );
                         }else{
-                            $contents[] = array(
+                            $datas[] = array(
                                 'tanggal' => $formatedDateSearch,
                                 'keterangan' => $akun->nama_akun,
                                 'debit' => $total->total_sum,
@@ -101,15 +113,86 @@ class ReportController extends Controller
                         }
                     
                 }
-                $datas[] = array_merge($d, array('contents' => $contents));
             }
-            // $jurnal = Pengeluaran::whereDate('tgl_transaksi', $date->copy()->startOfMonth()->addDays($i-1));
         }
+    }else{
+        for ($i=1; $i <= $date->copy()->endOfMonth()->format('d') ; $i++) { 
+            # code...
+            $formatedDateSearch = $date->copy()->startOfMonth()->addDays($i-1)->format('Y-m-d');
+            $totalsByKodeAkun = Pengeluaran::whereDate('tgl_transaksi', $formatedDateSearch)
+            ->whereHas('akun', function($q) use ($akunID) {
+                $q->where('id', $akunID);
+            })
+            ->groupBy('kode_akun')
+            ->selectRaw('kode_akun, SUM(nominal) as total_sum')
+            ->orderBy('id', 'asc')
+            ->get();
 
-        //      $datas = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->groupBy('kode_akun', 'judul')->select('tgl_transaksi')->get();;
-        // dd($datas);
-        return view('content.report.buku-besar', compact('datas','month', 'year'));
+            if(count($totalsByKodeAkun) >0 ){
+                
+            
+                foreach ($totalsByKodeAkun as $total) {
+                        $akun = Akun::where('id', $total->kode_akun)->first();
+                        if($akun->kategori_akun == 'debit'){
+                         
+                            $datas[] = array(
+                                'tanggal' => $formatedDateSearch,
+                                'keterangan' => $akun->nama_akun,
+                                'debit' => 0,
+                                'kredit' => $total->total_sum,
+                            );
+                        }else{
+                            $datas[] = array(
+                                'tanggal' => $formatedDateSearch,
+                                'keterangan' => $akun->nama_akun,
+                                'debit' => $total->total_sum,
+                                'kredit' => 0,
+                            );
+                      
+                        }
+                    
+                }
+            }
+        }  
+    }
+
+        return view('content.report.buku-besar', compact('datas','month', 'year', 'akuns','akunID', 'saldo'));
     }
    
+    function perubahanModal(Request $request)  {
+        $month = isset($request->month)? $request->month : date('m');
+        $year = isset($request->year)? $request->year : date('Y');
+        $date = Carbon::parse($year."-".$month."-01");
+        $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
+        $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'debit');
+        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'kredit');
+        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        $modal = $saldoDebit - $saldoKredit;
+
+        $formatedDateSearch = $date->copy()->startOfMonth()->addDays($month-1)->format('Y-m-d');
+        $prive = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        ->whereHas('akun', function($q) {
+            $q->where('kode_akun', '30102');
+        })
+        ->groupBy('kode_akun')
+        ->sum('nominal');
+        $laba = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        ->whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'debit')->where('kode_akun', '<>','30102');
+        })
+        ->groupBy('kode_akun')
+        ->sum('nominal') - Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        ->whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'kredit')->where('kode_akun', '<>','30102');
+        })
+        ->groupBy('kode_akun')
+        ->sum('nominal') ;
+
+        return view('content.report.perubahan-modal', compact('month', 'year', 'modal', 'prive', 'laba'));
+
+    }
     
 }

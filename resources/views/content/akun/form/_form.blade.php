@@ -1,7 +1,9 @@
 <div class="mb-3 row">
     <label for="example-text-input" class="col-md-2 col-form-label">Kode Akun</label>
     <div class="col-md-10">
-        <input class="form-control" type="text" value="{{ !empty($data) ? $data->kode_akun : old('kode_akun') }}" name="kode_akun" placeholder="Masukkan kode akun ... ">
+        <input class="form-control" type="text" value="{{ !empty($data) ? $data->kode_akun : old('kode_akun') }}" name="kode_akun" placeholder="Masukkan kode akun ... " @if (!empty($data))
+            readonly
+        @endif>
         {!! $errors->first('kode_akun', '<p class="text-danger">:message</p>') !!}
     
     </div>

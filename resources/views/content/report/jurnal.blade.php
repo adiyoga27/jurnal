@@ -82,7 +82,7 @@
                         <h4>JURNAL UMUM</h4>
                     </center>
                     <center>
-                        <h4>PERIODE MARET 2024</h4>
+                        <h4>PERIODE {{ \Carbon\Carbon::parse($year."-".$month."-01")->format('M') }} 2024</h4>
                     </center>
                     <hr>
                     <table width="100%" id="tableData" class="table table-bordered dt-responsive  nowrap w-100"
