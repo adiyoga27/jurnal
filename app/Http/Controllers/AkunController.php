@@ -51,6 +51,7 @@ class AkunController extends Controller
             Akun::create([
                 'kode_akun' => $request->kode_akun,
                 'nama_akun' => $request->nama_akun,
+                'sub_akun'  => $request->sub_akun,
                 'kategori_akun' => $request->kategori_akun,
             ]);
             return redirect()->route('akun.index')->with('success', 'Data berhasil ditambahkan');
@@ -84,12 +85,14 @@ class AkunController extends Controller
         $request->validate([
             'kode_akun' => 'required',
             'nama_akun' => 'required',
+            'sub_akun' =>'required',
             'kategori_akun' => 'required',
         ]);
         try {
             Akun::where('id', $id)->update([
                 'kode_akun' => $request->kode_akun,
                 'nama_akun' => $request->nama_akun,
+                'sub_akun'  => $request->sub_akun,
                 'kategori_akun' => $request->kategori_akun,
             ]);
             return redirect()->route('akun.index')->with('success', 'Data berhasil diubah');

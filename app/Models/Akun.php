@@ -13,5 +13,6 @@ class Akun extends Model
         'kode_akun',
         'nama_akun',
         'kategori_akun',
+        'sub_akun'
     ];
 }

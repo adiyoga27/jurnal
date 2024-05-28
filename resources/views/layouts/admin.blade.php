@@ -162,7 +162,7 @@
                                     <span key="t-ecommerce">Laporan</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="javascript: onGoing('Feature Laporan Jurnal');" key="t-products">Jurnal Umum</a></li>
+                                    <li><a href="{{url('jurnal')}}" key="t-products">Jurnal Umum</a></li>
                                     <li><a href="javascript: onGoing('Feature Laporan Buku Besar');" key="t-product-detail">Buku Besar</a></li>
                                     <li><a href="javascript: onGoing('Feature Laporan Arus Kas');" key="t-product-detail">Arus Kas</a></li>
                                     <li><a href="javascript: onGoing('Feature Laporan Perubahaan Modal');" key="t-product-detail">Perubahan Modal</a></li>

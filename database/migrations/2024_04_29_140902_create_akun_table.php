@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('akun', function (Blueprint $table) {
             $table->id();
             $table->string('kode_akun', 10);
+            $table->string('sub_akun',100);
             $table->string('nama_akun');
             $table->enum('kategori_akun', ['debit', 'kredit']);
             $table->timestamps();

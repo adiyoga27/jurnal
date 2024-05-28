@@ -6,7 +6,14 @@
     
     </div>
 </div>
-
+<div class="mb-3 row">
+    <label for="example-text-input" class="col-md-2 col-form-label">Sub Akun</label>
+    <div class="col-md-10">
+        <input class="form-control" type="text" value="{{ !empty($data) ? $data->sub_akun : old('sub_akun') }}" name="sub_akun" placeholder="Masukkan sub akun ... ">
+        {!! $errors->first('sub_akun', '<p class="text-danger">:message</p>') !!}
+        
+    </div>
+</div>
 <div class="mb-3 row">
     <label for="example-text-input" class="col-md-2 col-form-label">Nama Akun</label>
     <div class="col-md-10">

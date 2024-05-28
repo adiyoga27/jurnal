@@ -29,7 +29,8 @@
                     <thead>
                         <tr>
                             <th>Kode</th>
-                            <th>Nama</th>
+                            <th>Sub Akun</th>
+                            <th>Nama Akun</th>
                             <th>Kategori</th>
                             <th>Action</th>
                         </tr>
@@ -61,7 +62,9 @@
             columns: [
                 {
                     data: 'kode_akun',
-                }, {
+                },  {
+                    data: 'sub_akun',
+                },{
                     data: 'nama_akun',
                 }, {
                     data: 'kategori_akun',

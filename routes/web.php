@@ -6,6 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('expense', ExpenseController::class);
     Route::get('transaction/print/{noinvoice}', [TransactionController::class, 'print'])->name('transaction.print');
     Route::resource('transaction', TransactionController::class);
+
+    Route::get('jurnal', [ReportController::class, 'jurnal']);
 });
