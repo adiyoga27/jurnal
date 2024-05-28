@@ -65,7 +65,7 @@
                         <tr>
                             <th>#</th>
                             <th>Produk</th>
-                            <th>Harga Beli</th>
+                            {{-- <th>Harga Beli</th> --}}
                             <th>Harga Jual</th>
                             <th>Qty</th>
                             <th>Total</th>
@@ -123,8 +123,8 @@
     function addRowInit(){
         var newRow = table.row.add([
         '<a class="btn btn-danger btn-sm delBtn ">X</a>',
-        '<select class="form-control select2" name="product_id[]"><option value="" required>Pilih Produk</option> @foreach ($products as $p) <option value="{{$p->id}}">{{$p->nama_produk}}</option>@endforeach</select>',
-        '<input type="number" class="form-control harga_beli" name="harga_beli[]" required>',
+        '<select class="form-control select2" name="product_id[]"><option value="" required>Pilih Produk</option> @foreach ($products as $p) <option value="{{$p->id}}">{{$p->nama_produk}} | Rp{{number_format($p->harga_beli,0,',','.')}}</option>@endforeach</select>',
+        // '<input type="number" class="form-control harga_beli" name="harga_beli[]" required>',
         '<input type="number" class="form-control harga_jual" name="harga_jual[]" required>',
         '<input type="number" class="form-control qty"  name="qty[]" required>',
         '<input type="text" class="form-control total" disabled>',

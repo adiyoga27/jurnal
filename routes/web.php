@@ -29,4 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('transaction', TransactionController::class);
 
     Route::get('jurnal', [ReportController::class, 'jurnal']);
+    Route::post('jurnal', [ReportController::class, 'jurnal']);
+
+    Route::get('buku-besar', [ReportController::class, 'bukuBesar']);
+    Route::post('buku-besar', [ReportController::class, 'bukuBesar']);
 });

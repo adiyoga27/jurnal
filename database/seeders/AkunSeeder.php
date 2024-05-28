@@ -21,35 +21,39 @@ class AkunSeeder extends Seeder
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
 
-        ],[
-            'sub_akun' => 'Aktiva Lancar',
-            'kode_akun' => '10102',
-            'nama_akun' => 'Bank',
-            'kategori_akun' => 'debit',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ],[
-            'sub_akun' => 'Aktiva Lancar',
-            'kode_akun' => '10103',
-            'nama_akun' => 'Persediaan Barang Dagang',
-            'kategori_akun' => 'debit',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ],[
+        ],
+        // [
+        //     'sub_akun' => 'Aktiva Lancar',
+        //     'kode_akun' => '10102',
+        //     'nama_akun' => 'Bank',
+        //     'kategori_akun' => 'debit',
+        //     'created_at' => date('Y-m-d H:i:s'),
+        //     'updated_at' => date('Y-m-d H:i:s'),
+        // ],[
+        //     'sub_akun' => 'Aktiva Lancar',
+        //     'kode_akun' => '10103',
+        //     'nama_akun' => 'Persediaan Barang Dagang',
+        //     'kategori_akun' => 'debit',
+        //     'created_at' => date('Y-m-d H:i:s'),
+        //     'updated_at' => date('Y-m-d H:i:s'),
+        // ],
+        [
             'sub_akun' => 'Kewajiban Lancar',
             'kode_akun' => '20101',
             'nama_akun' => 'Hutang Usaha',
             'kategori_akun' => 'kredit',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
-        ],[
-            'sub_akun' => 'Modal',
-            'kode_akun' => '30101',
-            'nama_akun' => 'Modal Perusahaan',
-            'kategori_akun' => 'kredit',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ],[
+        ],
+        // [
+        //     'sub_akun' => 'Modal',
+        //     'kode_akun' => '30101',
+        //     'nama_akun' => 'Modal Perusahaan',
+        //     'kategori_akun' => 'kredit',
+        //     'created_at' => date('Y-m-d H:i:s'),
+        //     'updated_at' => date('Y-m-d H:i:s'),
+        // ],
+        [
             'sub_akun' => 'Modal',
             'kode_akun' => '30102',
             'nama_akun' => 'Pengambilan Prive',

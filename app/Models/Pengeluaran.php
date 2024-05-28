@@ -15,6 +15,7 @@ class Pengeluaran extends Model
         'judul',
         'keterangan',
         'nominal',
+        'referensi_no'
     ];
     public function akun(){
         return $this->hasOne(Akun::class, 'id', 'kode_akun');

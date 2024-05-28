@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailTransaction;
+use App\Models\Pengeluaran;
 use App\Models\Product;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -76,7 +77,8 @@ class TransactionController extends Controller
                     'kode_produk' =>$product->kode_produk,
                     'nama_produk' =>$product->nama_produk,
                     'qty' => $request->qty[$i],
-                    'harga_beli' => $request->harga_beli[$i],
+                    // 'harga_beli' => $request->harga_beli[$i],
+                    'harga_beli' =>$product->harga_beli,
                     'harga_jual' => $request->harga_jual[$i],
                     'total' => $request->qty[$i] * $request->harga_jual[$i]
                 ]);
@@ -86,6 +88,15 @@ class TransactionController extends Controller
            tap($transaction->update([
                 'total' => $total
             ]));
+
+            Pengeluaran::create([
+                'tgl_transaksi' => Carbon::now(),
+                'kode_akun' => 4,
+                'judul' => "Transaksi",
+                'keterangan' => "Transaksi dengan No. $transaction->noinvoice",
+                'nominal' => $total,
+                'referensi_no' => $transaction->noinvoice,
+            ]);
             DB::commit();
             //code...
             return redirect()->route('transaction.print', $transaction->noinvoice)->with('success', 'Data berhasil ditambahkan');

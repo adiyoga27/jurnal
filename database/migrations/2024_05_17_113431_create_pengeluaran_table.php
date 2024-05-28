@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('judul', 200);
             $table->text('keterangan');
             $table->decimal('nominal', 10, 2);
+            $table->string('referensi_no', 50)->nullable();
             $table->timestamps();
         });
     }

@@ -33,6 +33,7 @@ class Transaction extends Model
                 'username' => auth()->user()->username,
                 'user_id' => auth()->user()->id,
             ]);
+          
 
 
         });
