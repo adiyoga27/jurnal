@@ -162,12 +162,12 @@
                                     <span key="t-ecommerce">Laporan</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="{{url('jurnal')}}" key="t-products">Jurnal Umum</a></li>
-                                    <li><a href="{{url('buku-besar')}}" key="t-product-detail">Buku Besar</a></li>
-                                    <li><a href="{{url('arus-kas')}}" key="t-product-detail">Arus Kas</a></li>
-                                    <li><a href="{{url('perubahan-modal')}}" key="t-product-detail">Perubahan Modal</a></li>
-                                    <li><a href="{{url('neraca')}}" key="t-product-detail">Neraca</a></li>
-                                    <li><a href="javascript: onGoing('Feature Laporan Laba Rugi');" key="t-product-detail">Laba Rugi</a></li>
+                                    <li><a href="{{url('jurnal')}}" key="t-vertical">Jurnal Umum</a></li>
+                                    <li><a href="{{url('buku-besar')}}" key="t-buku-besar">Buku Besar</a></li>
+                                    <li><a href="{{url('arus-kas')}}" key="t-arus-kas">Arus Kas</a></li>
+                                    <li><a href="{{url('perubahan-modal')}}" key="t-perubahan-modal">Perubahan Modal</a></li>
+                                    <li><a href="{{url('neraca')}}" key="t-neraca">Neraca</a></li>
+                                    <li><a href="{{url('laba-rugi')}}" key="t-laba-rugi">Laba Rugi</a></li>
                                   
                                 </ul>
                             </li>

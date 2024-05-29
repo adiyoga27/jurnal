@@ -269,26 +269,40 @@ class ReportController extends Controller
         })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
         $modal = $saldoDebit - $saldoKredit;
 
-        $arus = [];
-        $akuns = Akun::orderBy('kategori_akun', 'asc')->get();
+        $arus = $results= [];
+        $akuns = Akun::orderBy('sub_akun', 'asc')->groupBy('sub_akun')->select('sub_akun')->get();
         foreach ($akuns as $key => $value) {
-            if($value->kode_akun == '10101'){
-                $arus[] = array(
-                    'akun' => $value->nama_akun,
-                    'kategori' => $value->kategori_akun,
-                    'nominal' => $modal,
+            if($value->sub_akun != 'Kas'){
+                $arrayAkun = Akun::where('sub_akun', $value->sub_akun)->get();
+                $arus = array(
+                    'sub' => $value->sub_akun,
                 );
-            }else{
-                $arus[] = array(
-                    'akun' => $value->nama_akun,
-                    'kategori' => $value->kategori_akun,
-                    'nominal' => Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $value->id)->sum('nominal'),
-                );
-            }
-           
+                $ak = [];
+                $total = 0;
+                foreach ($arrayAkun as $key => $a) {
+                    $nominal = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $a->id)->sum('nominal');
+                    if($nominal >0){
 
+                        $ak[] =  array(
+                            'akun' => $a->nama_akun,
+                            'kategori' => $a->kategori_akun,
+                            'nominal' => $nominal,
+                        );
+                    }
+                    $total += $nominal;
+                }
+                if($total > 0){
+
+                    $results[] = array_merge($arus, [
+                        'content' => $ak,
+                        'total' => $total
+                    ]);
+                }
+            
+            }
         }
-        return view('content.report.laba-rugi', compact('month', 'year', 'modal','arus'));
+
+        return view('content.report.laba-rugi', compact('month', 'year', 'modal','results'));
 
     }
 }

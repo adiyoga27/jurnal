@@ -42,4 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('neraca', [ReportController::class, 'neraca']);
     Route::post('neraca', [ReportController::class, 'neraca']);
+
+    Route::get('laba-rugi', [ReportController::class, 'labaRugi']);
+    Route::post('laba-rugi', [ReportController::class, 'labaRugi']);
 });

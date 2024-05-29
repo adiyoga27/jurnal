@@ -95,18 +95,31 @@
                     <hr>
                     <br>
                     <center>
-                    <table style="width: 100%; font-size:10pt"  id="tableData"  border="1"
+                    <table style="width: 100%; font-size:10pt"  id="tableData" 
                         style="vertical-align: center; align-text:center">
                       
-                        <tbody style="border:1; background-color:rgb(94, 204, 255); color:black; font-weight:bold" >
-                            <tr>
-                                <td rowspan="2" style="vertical-align: center;"><center> NAMA AKUN</center></td>
-                                <td colspan="2"><center>NOMINAL</center></td>
-                            </tr>
-                            <tr>
-                                <td><center>Debit</center></td>
-                                <td><center>Kredit</center></td>
-                            </tr>
+                        <tbody style="border:1;" >
+                            @foreach ($results as $r)
+                                <tr style="color:black; font-weight:bold">
+                                    <td colspan="3">{{$r['sub']}}</td>
+                                </tr>
+                                @foreach ($r['content'] as $item)
+                                    <tr>
+                                        <td >{{$item['akun']}}</td>
+                                        <td style="text-align: right">{{"Rp".number_format($item['nominal'],0,",",".")}}</td>
+                                        <td ></td>
+                                    </tr>
+                                @endforeach
+                                <tr  style="color:black; font-weight:bold">
+                                    <td style="text-align:right">Total {{$r['sub']}} &nbsp&nbsp&nbsp&nbsp</td>
+                                    <td></td>
+                                    <td style="text-align: right">{{"Rp".number_format($r['total'],0,",",".")}}</td>
+                                </tr>
+                                <tr  style="color:black; font-weight:bold">
+                                    <td colspan="3"><hr></td>
+                                   
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     
