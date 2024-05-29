@@ -243,10 +243,14 @@ class ReportController extends Controller
                     'nominal' => $modal,
                 );
             }else{
+                $nomin = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $value->id)->sum('nominal');
+                if($value->kode_akun == '30101'){
+                    $nomin = $modal - $nomin + Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', '4')->sum('nominal');
+                }
                 $arus[] = array(
                     'akun' => $value->nama_akun,
                     'kategori' => $value->kategori_akun,
-                    'nominal' => Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $value->id)->sum('nominal'),
+                    'nominal' => $nomin,
                 );
             }
            
