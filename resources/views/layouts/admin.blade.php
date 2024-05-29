@@ -374,6 +374,7 @@
 
         <script src="{{ url('assets') }}/extra-libs/toastr/dist/build/toastr.min.js"></script>
         <script src="{{ url('assets') }}/extra-libs/toastr/toastr-init.js"></script>
+        <script src="{{ url('assets') }}/js/app.js"></script>
 
         <!-- dashboard init -->
         {{-- <script src="{{url('assets')}}//js/pages/dashboard.init.js"></script> --}}
