@@ -14,11 +14,11 @@
         <link rel="shortcut icon" href="{{url('assets')}}//images/favicon.ico">
 
         <!-- Bootstrap Css -->
-        <link href="{{url('assets')}}//css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="{{url('assets')}}/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
         <!-- Icons Css -->
-        <link href="{{url('assets')}}//css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{url('assets')}}/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
-        <link href="{{url('assets')}}//css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <link href="{{url('assets')}}/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
         <link href="{{ url('assets') }}/extra-libs/toastr/dist/build/toastr.min.css" rel="stylesheet">
 
         @yield('css')
@@ -366,18 +366,17 @@
         <div class="rightbar-overlay"></div>
 
         <!-- JAVASCRIPT -->
-        <script src="{{url('assets')}}//libs/jquery/jquery.min.js"></script>
-        <script src="{{url('assets')}}//libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="{{url('assets')}}//libs/metismenu/metisMenu.min.js"></script>
-        <script src="{{url('assets')}}//libs/simplebar/simplebar.min.js"></script>
-        <script src="{{url('assets')}}//libs/node-waves/waves.min.js"></script>
+        <script src="{{url('/')}}/assets/libs/jquery/jquery.min.js"></script>
+        <script src="{{url('assets')}}/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{{url('assets')}}/libs/metismenu/metisMenu.min.js"></script>
+        <script src="{{url('assets')}}/libs/simplebar/simplebar.min.js"></script>
+        <script src="{{url('assets')}}/libs/node-waves/waves.min.js"></script>
+        {{-- <script src="{{ url('assets') }}/js/app.js"></script> --}}
 
         <script src="{{ url('assets') }}/extra-libs/toastr/dist/build/toastr.min.js"></script>
         <script src="{{ url('assets') }}/extra-libs/toastr/toastr-init.js"></script>
-        <script src="{{ url('assets') }}/js/app.js"></script>
 
         <!-- dashboard init -->
-        {{-- <script src="{{url('assets')}}//js/pages/dashboard.init.js"></script> --}}
         <script>
 
         @if ($errors->any()) 
