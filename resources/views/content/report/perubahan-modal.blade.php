@@ -74,8 +74,8 @@
     </div> <!-- end row -->
 
     <div class="row">
-        <div class="col-4"></div> 
-        <div class="col-4">
+        <div class="col-3"></div> 
+        <div class="col-6">
             <div class="card">
 
                 <div class="card-body">
@@ -87,7 +87,7 @@
                     </center>
                     <hr>
                     <center>
-                    <table style="width: 80%; font-size:13pt"  id="tableData" class="  "
+                    <table style="width: 80%; font-size:12pt"  id="tableData" class="  "
                         style="vertical-align: top;">
                       
                         <tbody>
