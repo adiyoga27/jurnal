@@ -36,4 +36,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('perubahan-modal', [ReportController::class, 'perubahanModal']);
     Route::post('perubahan-modal', [ReportController::class, 'perubahanModal']);
+
+    Route::get('arus-kas', [ReportController::class, 'arusKas']);
+    Route::post('arus-kas', [ReportController::class, 'arusKas']);
+
+    Route::get('neraca', [ReportController::class, 'neraca']);
+    Route::post('neraca', [ReportController::class, 'neraca']);
 });

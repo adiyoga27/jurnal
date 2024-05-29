@@ -164,9 +164,9 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{url('jurnal')}}" key="t-products">Jurnal Umum</a></li>
                                     <li><a href="{{url('buku-besar')}}" key="t-product-detail">Buku Besar</a></li>
-                                    <li><a href="javascript: onGoing('Feature Laporan Arus Kas');" key="t-product-detail">Arus Kas</a></li>
+                                    <li><a href="{{url('arus-kas')}}" key="t-product-detail">Arus Kas</a></li>
                                     <li><a href="{{url('perubahan-modal')}}" key="t-product-detail">Perubahan Modal</a></li>
-                                    <li><a href="javascript: onGoing('Feature Laporan Neraca');" key="t-product-detail">Neraca</a></li>
+                                    <li><a href="{{url('neraca')}}" key="t-product-detail">Neraca</a></li>
                                     <li><a href="javascript: onGoing('Feature Laporan Laba Rugi');" key="t-product-detail">Laba Rugi</a></li>
                                   
                                 </ul>
