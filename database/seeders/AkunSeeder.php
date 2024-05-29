@@ -45,14 +45,14 @@ class AkunSeeder extends Seeder
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ],
-        // [
-        //     'sub_akun' => 'Modal',
-        //     'kode_akun' => '30101',
-        //     'nama_akun' => 'Modal Perusahaan',
-        //     'kategori_akun' => 'kredit',
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s'),
-        // ],
+        [
+            'sub_akun' => 'Modal',
+            'kode_akun' => '30101',
+            'nama_akun' => 'Modal Perusahaan',
+            'kategori_akun' => 'kredit',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ],
         [
             'sub_akun' => 'Modal',
             'kode_akun' => '30102',

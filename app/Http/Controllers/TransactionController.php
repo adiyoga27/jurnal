@@ -90,7 +90,7 @@ class TransactionController extends Controller
             ]));
 
             Pengeluaran::create([
-                'tgl_transaksi' => Carbon::now(),
+                'tgl_transaksi' => $request->paid_at,
                 'kode_akun' => 4,
                 'judul' => "Transaksi",
                 'keterangan' => "Transaksi dengan No. $transaction->noinvoice",
