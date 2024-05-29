@@ -77,13 +77,16 @@
         <div class="col-3"></div> 
         <div class="col-6">
             <div class="card">
-
+@php
+use Carbon\Carbon;
+    Carbon::setLocale('id');
+@endphp
                 <div class="card-body">
                     <center>
                         <h4>LAPORAN PERUBAHAN MODAL</h4>
                     </center>
                     <center>
-                        <h4>PERIODE {{ \Carbon\Carbon::parse($year."-".$month."-01")->format('M') }} 2024</h4>
+                        <h4>PERIODE {{ strtoupper(\Carbon\Carbon::parse($year."-".$month."-01")->translatedFormat('F')) }} {{$year}}</h4>
                     </center>
                     <hr>
                     <center>

@@ -76,13 +76,16 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-
+                @php
+                use Carbon\Carbon;
+                    Carbon::setLocale('id');
+                @endphp
                 <div class="card-body">
                     <center>
                         <h4>JURNAL UMUM</h4>
                     </center>
                     <center>
-                        <h4>PERIODE {{ \Carbon\Carbon::parse($year."-".$month."-01")->format('M') }} 2024</h4>
+                        <h4>PERIODE {{ strtoupper(\Carbon\Carbon::parse($year."-".$month."-01")->translatedFormat('F')) }} {{$year}}</h4>
                     </center>
                     <hr>
                     <table width="100%" id="tableData" class="table table-bordered dt-responsive  nowrap w-100"

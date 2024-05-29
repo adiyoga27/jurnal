@@ -25,7 +25,7 @@
                         <h4 class="card-title">Cari Berdasarkan : </h4>
                         <hr>
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="mb-3 ">
                                     <label for="example-text-input" class="col-md-2 col-form-label">Akun</label>
                                     <select class="form-control" name="akun">
@@ -38,7 +38,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="mb-3 ">
                                     <label for="example-text-input" class="col-md-2 col-form-label">Tahun</label>
                                     <select class="form-control" name="year">
@@ -51,7 +51,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="mb-3 ">
                                     <label for="example-text-input" class="col-md-2 col-form-label">Bulan</label>
                                     <select class="form-control" name="month">
@@ -89,13 +89,16 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-
+                @php
+                use Carbon\Carbon;
+                    Carbon::setLocale('id');
+                @endphp
                 <div class="card-body">
                     <center>
                         <h4>BUKU BESAR</h4>
                     </center>
                     <center>
-                        <h4>PERIODE {{ \Carbon\Carbon::parse($year."-".$month."-01")->format('M') }} 2024</h4>
+                        <h4>PERIODE {{ strtoupper(\Carbon\Carbon::parse($year."-".$month."-01")->translatedFormat('F')) }} {{$year}}</h4>
                     </center>
                     <hr>
                     <table width="100%" id="tableData" class="table table-bordered dt-responsive  nowrap w-100"
