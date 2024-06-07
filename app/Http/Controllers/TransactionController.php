@@ -68,7 +68,7 @@ class TransactionController extends Controller
                 'paid_at' => $request->paid_at,
                 'keterangan' => $request->keterangan
             ]);
-            $total = 0;
+            $total = $totalBeli = 0;
             for($i=0; $i<count($request->product_id); $i++){
                 $product = Product::where('id', $request->product_id[$i])->first();
                 DetailTransaction::create([
@@ -83,6 +83,7 @@ class TransactionController extends Controller
                     'total' => $request->qty[$i] * $request->harga_jual[$i]
                 ]);
                 $total = $total+($request->qty[$i] * $request->harga_jual[$i]);
+                $totalBeli = $totalBeli+($request->qty[$i] * $request->harga_beli[$i]);
                 
             }
            tap($transaction->update([
@@ -95,6 +96,14 @@ class TransactionController extends Controller
                 'judul' => "Transaksi",
                 'keterangan' => "Transaksi dengan No. $transaction->noinvoice",
                 'nominal' => $total,
+                'referensi_no' => $transaction->noinvoice,
+            ]);
+            Pengeluaran::create([
+                'tgl_transaksi' => $request->paid_at,
+                'kode_akun' => 5,
+                'judul' => "HPP Transaksi",
+                'keterangan' => "HPP Transaksi dengan No. $transaction->noinvoice",
+                'nominal' => $totalBeli,
                 'referensi_no' => $transaction->noinvoice,
             ]);
             DB::commit();
@@ -137,6 +146,8 @@ class TransactionController extends Controller
     public function destroy(string $id)
     {
         try {
+            $transaction = Transaction::where('id', $id)->first();
+            Pengeluaran::where('referensi_no', $transaction->noinvoice)->delete();
             Transaction::destroy($id);
             return redirect()->route('transaction.index')->with('success', 'Data berhasil dihapus');
         } catch (\Throwable $th) {
