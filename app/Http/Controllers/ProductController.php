@@ -27,7 +27,12 @@ class ProductController extends Controller
                         'padding' => '85px',
                     ]);
                 })
-
+                ->addColumn('harga_beli', function ($data) {
+                    return "Rp".number_format($data->harga_beli,0,",",".");
+                })
+                ->addColumn('harga_jual', function ($data) {
+                    return "Rp".number_format($data->harga_jual,0,",",".");
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
