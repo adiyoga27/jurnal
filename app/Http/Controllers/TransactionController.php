@@ -83,7 +83,7 @@ class TransactionController extends Controller
                     'total' => $request->qty[$i] * $request->harga_jual[$i]
                 ]);
                 $total = $total+($request->qty[$i] * $request->harga_jual[$i]);
-                $totalBeli = $totalBeli+($request->qty[$i] * $request->harga_beli[$i]);
+                $totalBeli = $totalBeli+($request->qty[$i] * $product->harga_beli);
                 
             }
            tap($transaction->update([
@@ -112,7 +112,7 @@ class TransactionController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            return redirect()->back()->withErrors('Data gagal dihapus '.$th->getMessage());
+            return redirect()->back()->withErrors('Gagal Checkout '.$th->getMessage());
         }
     }
 

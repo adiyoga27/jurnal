@@ -102,46 +102,10 @@
                         style="vertical-align: center; align-text:center">
                       
                         <tbody style="border:1;" >
-                               
-                            @php
-                                $debit = $kredit= 0
-                            @endphp
-                                @foreach ($results as $item)
-                                <tr style="background-color: rgb(182, 179, 179); " height="30px" >
-                                    <td colspan="3" style="color:black; font-weight:bold">{{$item['akun']}}</td>
+                            @foreach ($results as $r)
+                                <tr style="color:black; font-weight:bold">
+                                    <td colspan="3">{{$r['sub']}}</td>
                                 </tr>
-                                @php
-                                    $total = 0;
-                                @endphp
-                                    @foreach ($item['details'] as $d)
-                                    @php
-                                        $total += $d['nominal'];
-                                        if($d['tipe'] == 'debit'){
-                                            $debit += $d['nominal'];
-                                        }else{
-                                            $kredit += $d['nominal'];
-                                        }
-                                    @endphp
-                                    <tr  height="30px">
-                                        <td>{{$d['title']}}</td>
-                                        <td>{{"Rp".number_format($d['nominal'],0,",",".")}}</td>
-                                        <td></td>
-                                    </tr>
-                                    @endforeach
-                                    <tr  height="30px">
-                                        <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Total {{$item['akun']}}</td>
-                                        <td style="text-align: right">{{"Rp".number_format($total,0,",",".")}}</td>
-                                        <td></td>
-                                    </tr>
-                                    
-                                @endforeach
-                                <tr style="background-color: rgb(182, 179, 179)"  height="30px">
-                                    <td style="color:black; font-weight:bold">Laba/Rugi</td>
-                                    <td style="text-align: right">{{"Rp".number_format($debit-$kredit,0,",",".")}}</td>
-                                    <td></td>
-                                </tr>
-                            {{-- @foreach ($results as $r)
-                               
                                 @foreach ($r['content'] as $item)
                                     <tr>
                                         <td >{{$item['akun']}}</td>
@@ -158,7 +122,7 @@
                                     <td colspan="3"><hr></td>
                                    
                                 </tr>
-                            @endforeach --}}
+                            @endforeach
                         </tbody>
                     </table>
                     

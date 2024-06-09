@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Akun;
+use App\Models\DetailTransaction;
 use App\Models\Pengeluaran;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -264,49 +266,86 @@ class ReportController extends Controller
         $month = isset($request->month)? $request->month : date('m');
         $year = isset($request->year)? $request->year : date('Y');
         $date = Carbon::parse($year."-".$month."-01");
-        $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
-        $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
-            $q->where('kategori_akun', 'debit');
-        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
-        $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
-            $q->where('kategori_akun', 'kredit');
-        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
-        $modal = $saldoDebit - $saldoKredit;
 
-        $arus = $results= [];
-        $akuns = Akun::orderBy('sub_akun', 'asc')->groupBy('sub_akun')->select('sub_akun')->get();
-        foreach ($akuns as $key => $value) {
-            if($value->sub_akun != 'Kas'){
-                $arrayAkun = Akun::where('sub_akun', $value->sub_akun)->get();
-                $arus = array(
-                    'sub' => $value->sub_akun,
+
+
+        $transaksiTotal = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', 4)->sum('nominal');
+        $hppTotal = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', 5)->sum('nominal');
+       
+        $akuns = Akun::where('sub_akun', 'Beban')->get();
+        foreach ($akuns as $value) {
+            $nominal = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $value->id)->sum('nominal');
+            if($nominal  > 0){
+
+                $beban[] = array(
+                    'title' => $value->nama_akun,
+                    'nominal' => $nominal,
+                    'tipe' => 'kredit'
                 );
-                $ak = [];
-                $total = 0;
-                foreach ($arrayAkun as $key => $a) {
-                    $nominal = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $a->id)->sum('nominal');
-                    if($nominal >0){
-
-                        $ak[] =  array(
-                            'akun' => $a->nama_akun,
-                            'kategori' => $a->kategori_akun,
-                            'nominal' => $nominal,
-                        );
-                    }
-                    $total += $nominal;
-                }
-                if($total > 0){
-
-                    $results[] = array_merge($arus, [
-                        'content' => $ak,
-                        'total' => $total
-                    ]);
-                }
-            
             }
         }
+        $results = [];
+        if($transaksiTotal > 0){
+            $results = [
+                array(
+                    'akun' => 'Pendapatan',
+                    'details' => [
+                        array(
+                            'title' => 'Penjualan Bersih',
+                            'nominal' => $transaksiTotal,
+                            'tipe' => 'debit'
 
-        return view('content.report.laba-rugi', compact('month', 'year', 'modal','results'));
+                        )
+                    ]
+                ),
+                array(
+                    'akun' => 'Beban',
+                    'details' => $beban
+                ),
+            ];
+        }
+        // $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
+        // $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
+        //     $q->where('kategori_akun', 'debit');
+        // })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        // $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
+        //     $q->where('kategori_akun', 'kredit');
+        // })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        // $modal = $saldoDebit - $saldoKredit;
+
+        // $arus = $results= [];
+        // $akuns = Akun::orderBy('sub_akun', 'asc')->groupBy('sub_akun')->select('sub_akun')->get();
+        // foreach ($akuns as $key => $value) {
+        //     if($value->sub_akun != 'Kas'){
+        //         $arrayAkun = Akun::where('sub_akun', $value->sub_akun)->get();
+        //         $arus = array(
+        //             'sub' => $value->sub_akun,
+        //         );
+        //         $ak = [];
+        //         $total = 0;
+        //         foreach ($arrayAkun as $key => $a) {
+        //             $nominal = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $a->id)->sum('nominal');
+        //             if($nominal >0){
+
+        //                 $ak[] =  array(
+        //                     'akun' => $a->nama_akun,
+        //                     'kategori' => $a->kategori_akun,
+        //                     'nominal' => $nominal,
+        //                 );
+        //             }
+        //             $total += $nominal;
+        //         }
+        //         if($total > 0){
+
+        //             $results[] = array_merge($arus, [
+        //                 'content' => $ak,
+        //                 'total' => $total
+        //             ]);
+        //         }
+            
+        //     }
+        // }
+        return view('content.report.laba-rugi', compact('month', 'year','results'));
 
     }
 }
