@@ -237,7 +237,7 @@ class ReportController extends Controller
 
         $arus = [];
         $akuns = Akun::orderBy('kategori_akun', 'asc')
-                    ->whereNotIn('nama_akun', ['Beban Gaji','Pengambilan Prive','Beban HPP'])
+                    ->whereNotIn('sub_akun', ['Beban','Modal'])
                     ->get();
         foreach ($akuns as $key => $value) {
             if($value->kode_akun == '10101'){
