@@ -236,7 +236,9 @@ class ReportController extends Controller
         $modal = $saldoDebit - $saldoKredit;
 
         $arus = [];
-        $akuns = Akun::orderBy('kategori_akun', 'asc')->get();
+        $akuns = Akun::orderBy('kategori_akun', 'asc')
+                    ->whereNotIn('nama_akun', ['Beban Gaji','Pengambilan Prive','Beban HPP'])
+                    ->get();
         foreach ($akuns as $key => $value) {
             if($value->kode_akun == '10101'){
                 $arus[] = array(
