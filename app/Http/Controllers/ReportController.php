@@ -232,6 +232,8 @@ class ReportController extends Controller
         $arus = [];
         $akuns = Akun::orderBy('kategori_akun', 'asc')
                     ->whereIn('sub_akun', ['Aktiva Lancar'])
+                    // ->whereNotIn('sub_akun', ['Beban'])
+                    // ->whereNotIn('nama_akun', ['Pengambilan Prive'])
                     ->get();
         foreach ($akuns as $key => $value) {
             $aktiva[] = [
