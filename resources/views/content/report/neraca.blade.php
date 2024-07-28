@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
-<style>
-    .thick-hr {
-        height: 5px;
-        background-color: black;
-        border: none;
-    }
-</style>
+    <style>
+        .thick-hr {
+            height: 5px;
+            background-color: black;
+            border: none;
+        }
+    </style>
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
@@ -81,11 +81,11 @@
     </div> <!-- end row -->
 
     <div class="row">
-        <div class="col-3"></div> 
+        <div class="col-3"></div>
         <div class="col-6">
             <div class="card">
                 @php
-                use Carbon\Carbon;
+                    use Carbon\Carbon;
                     Carbon::setLocale('id');
                 @endphp
                 <div class="card-body">
@@ -93,53 +93,120 @@
                         <h4 style="font-weight: bold">LAPORAN NERACA</h4>
                     </center>
                     <center>
-                        <h4 style="font-weight: bold">PERIODE {{ strtoupper(\Carbon\Carbon::parse($year."-".$month."-01")->translatedFormat('F')) }} {{$year}}</h4>
+                        <h4 style="font-weight: bold">PERIODE
+                            {{ strtoupper(\Carbon\Carbon::parse($year . '-' . $month . '-01')->translatedFormat('F')) }}
+                            {{ $year }}</h4>
                     </center>
                     <hr>
                     <br>
                     <center>
-                    <table style="width: 100%; font-size:10pt"  id="tableData"  border="1"
-                        style="vertical-align: center; align-text:center">
-                      
-                        <tbody style="border:1; background-color:rgb(94, 204, 255); color:black; font-weight:bold" >
-                            <tr>
-                                <td rowspan="2" style="vertical-align: center;"><center> NAMA AKUN</center></td>
-                                <td colspan="2"><center>NOMINAL</center></td>
-                            </tr>
-                            <tr>
-                                <td><center>Debit</center></td>
-                                <td><center>Kredit</center></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table  border="1" style="width: 100%; font-size:10pt" >
-                        @php
-                            $debit=$kredit=0;
-                        @endphp
-                        @foreach ($arus as $a)
-                            @php
-                                if($a['kategori'] == 'debit'){
-                                    $debit += $a['nominal'];
-                                }
-                                
-                                if($a['kategori'] == 'kredit'){
-                                    $kredit += $a['nominal'];
-                                    
-                                }
-                            @endphp
-                        <tr height="30px">
-                            <td>&nbsp&nbsp&nbsp{{$a['akun']}}</td>
-                            <td  style="text-align:right !important">{{$a['kategori'] == 'debit' ? "Rp".number_format($a['nominal'],0,",",".") : ""}}</td>
-                            <td  style="text-align:right !important">{{$a['kategori'] == 'kredit' ? "Rp".number_format($a['nominal'],0,",",".") : ""}}</td>
-                        </tr>
-                        @endforeach
-                        <tr  style="border:1; background-color:rgb(94, 204, 255); color:black; font-weight:bold" height="30px">
-                            <td style="font-weight:bold">Jumlah</td>
-                            <td  style="text-align:right !important; font-weight:bold">{{ "Rp".number_format($debit,0,",",".")}}</td>
-                            <td  style="text-align:right !important; font-weight:bold">{{ "Rp".number_format($kredit,0,",",".")}}</td>
-                        </tr>
 
-                    </table>
+                        <table class="table" border="1" style="width: 100%; font-size:10pt">
+                            <tr height="30px" style="background-color: darkgray">
+                                <td><b>Aktiva</b></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                            </tr>
+
+                            @foreach ($aktiva as $a)
+                                <tr height="30px">
+                                    <td>{{ $a['category'] }}</td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+                                </tr>
+                                <tr height="30px">
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important">{{ $a['data']['code'] }}</td>
+                                    <td>{{ $a['data']['title'] }}</td>
+                                    <td style="text-align:right !important">
+                                        {{ number_format($a['data']['amount'], 0, ',', '.') }}</td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+
+
+                                </tr>
+                            @endforeach
+
+                            <tr height="30px" style="background-color: darkgray">
+                                <td><b>Total Aktiva</b></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important">{{ number_format($a['data']['amount'], 0, ',', '.') }}
+                                </td>
+
+
+                            </tr>
+
+                            <tr height="30px" style="background-color: darkgray">
+                                <td><b>Pasiva</b></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+
+                            </tr>
+                            @php
+                                $pasivaAmount = 0;
+                            @endphp
+                            @foreach ($pasiva as $p)
+                                <tr height="30px">
+                                    <td>{{ $p['category'] }}</td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+                                    <td style="text-align:right !important"></td>
+
+                                </tr>
+
+                                @foreach ($p['data'] as $item)
+                                    <tr height="30px">
+                                        <td style="text-align:right !important"></td>
+                                        <td style="text-align:right !important">{{ $item['code'] }}</td>
+                                        <td>{{ $item['title'] }}</td>
+                                        <td style="text-align:right !important"></td>
+                                        @if (($item['code'] == '20101' || $item['code'] == '30102') && $item['amount'] > 0)
+                                            <td style="text-align:right !important">
+                                                ({{ number_format($item['amount'], 0, ',', '.') }})</td>
+                                        @else
+                                            <td style="text-align:right !important">
+                                                {{ number_format($item['amount'], 0, ',', '.') }}</td>
+                                        @endif
+                                        <td style="text-align:right !important"></td>
+
+                                    </tr>
+                                    @php
+                                        if (
+                                            ($item['code'] == '20101' || $item['code'] == '30102') &&
+                                            $item['amount'] > 0
+                                        ) {
+                                            $pasivaAmount = $pasivaAmount - $item['amount'];
+                                        } else {
+                                            $pasivaAmount = $pasivaAmount + $item['amount'];
+                                        }
+                                    @endphp
+                                @endforeach
+                            @endforeach
+                            <tr height="30px" style="background-color: darkgray">
+                                <td><b>Total Pasiva</b></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+                                <td style="text-align:right !important"></td>
+
+                                <td style="text-align:right !important">{{ number_format($pasivaAmount, 0, ',', '.') }}</td>
+
+                            </tr>
+                        </table>
                     </center>
 
                 </div>

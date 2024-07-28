@@ -226,43 +226,110 @@ class ReportController extends Controller
         $month = isset($request->month)? $request->month : date('m');
         $year = isset($request->year)? $request->year : date('Y');
         $date = Carbon::parse($year."-".$month."-01");
-        $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
-        $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
-            $q->where('kategori_akun', 'debit');
-        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
-        $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
-            $q->where('kategori_akun', 'kredit');
-        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
-        $modal = $saldoDebit - $saldoKredit;
+        $dateEnd = $date->copy()->endOfMonth()->format('Y-m-d');
+        $dateStart = $date->copy()->startOfMonth()->format('Y-m-d');
 
         $arus = [];
         $akuns = Akun::orderBy('kategori_akun', 'asc')
-                    ->whereNotIn('sub_akun', ['Beban','Modal'])
+                    ->whereIn('sub_akun', ['Aktiva Lancar'])
                     ->get();
         foreach ($akuns as $key => $value) {
-            if($value->kode_akun == '10101'){
-                $arus[] = array(
-                    'akun' => $value->nama_akun,
-                    'kategori' => $value->kategori_akun,
-                    'nominal' => $modal,
-                );
-            }else{
-                $nomin = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $value->id)->sum('nominal');
-                if($value->kode_akun == '30101'){
-                    $nomin = $modal - $nomin + Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', '4')->sum('nominal');
-                }
-                $arus[] = array(
-                    'akun' => $value->nama_akun,
-                    'kategori' => $value->kategori_akun,
-                    'nominal' => $nomin,
-                );
-            }
-           
+            $aktiva[] = [
+                'category' => 'Aktiva Lancar',
+                "data" =>[
+                    'code' => $value->kode_akun,
+                    'title' => $value->nama_akun,
+                    'amount' =>  Pengeluaran::whereHas('akun', function($q) {
+                        $q->where('kategori_akun', 'debit');
+                    })
+                    ->whereDate('tgl_transaksi', ">=",  $dateStart)
+                    ->whereDate('tgl_transaksi', "<=",  $dateEnd)->sum('nominal')
+                ]
+            ];
 
         }
-        return view('content.report.neraca', compact('month', 'year', 'modal','arus'));
+        $akunsPasiva = Akun::orderBy('kategori_akun', 'asc')
+        ->whereIn('sub_akun', ['Kewajiban Lancar', 'Modal'])
+        ->orderBy('kode_akun', 'asc')
+        ->get();
+        $modal = $pasiva = [];
+        foreach ($akunsPasiva as $key => $value) {
+            if($value->sub_akun == 'Kewajiban Lancar'){
+                $kewajiban[] = [
+           
+                        'code' => $value->kode_akun,
+                        'title' => $value->nama_akun,
+                        'amount' =>  Pengeluaran::whereDate('tgl_transaksi', ">=",  $dateStart)
+                        ->whereDate('tgl_transaksi', "<=",  $dateEnd)->where('kode_akun', $value->id)->sum('nominal')
+                ];
+            }
+            if($value->sub_akun == 'Modal'){
+                $modal[] =   [
+                        'code' => $value->kode_akun,
+                        'title' => $value->nama_akun,
+                        'amount' =>  Pengeluaran::whereHas('akun', function($q) {
+                            $q->where('kategori_akun', 'kredit');
+                        })
+                        ->whereDate('tgl_transaksi', ">=",  $dateStart)
+                        ->whereDate('tgl_transaksi', "<=",  $dateEnd)->where('kode_akun', $value->id)->sum('nominal')
+                ];
+            }
+        }
+        $pasiva = array(
+            [
+                'category' => 'Kewajiban Lancar',
+                'data' => $kewajiban
+            ],
+            [
+                'category' => 'Ekuitas',
+                'data' => $modal
+            ]
+        );
+        return view('content.report.neraca', compact('month', 'year', 'pasiva','aktiva'));
 
     }
+
+    // function neraca(Request $request)  {
+    //     $month = isset($request->month)? $request->month : date('m');
+    //     $year = isset($request->year)? $request->year : date('Y');
+    //     $date = Carbon::parse($year."-".$month."-01");
+    //     $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
+    //     $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
+    //         $q->where('kategori_akun', 'debit');
+    //     })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+    //     $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
+    //         $q->where('kategori_akun', 'kredit');
+    //     })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+    //     $modal = $saldoDebit - $saldoKredit;
+
+    //     $arus = [];
+    //     $akuns = Akun::orderBy('kategori_akun', 'asc')
+    //                 ->whereNotIn('sub_akun', ['Beban','Modal'])
+    //                 ->get();
+    //     foreach ($akuns as $key => $value) {
+    //         if($value->kode_akun == '10101'){
+    //             $arus[] = array(
+    //                 'akun' => $value->nama_akun,
+    //                 'kategori' => $value->kategori_akun,
+    //                 'nominal' => $modal,
+    //             );
+    //         }else{
+    //             $nomin = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', $value->id)->sum('nominal');
+    //             if($value->kode_akun == '30101'){
+    //                 $nomin = $modal - $nomin + Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)->where('kode_akun', '4')->sum('nominal');
+    //             }
+    //             $arus[] = array(
+    //                 'akun' => $value->nama_akun,
+    //                 'kategori' => $value->kategori_akun,
+    //                 'nominal' => $nomin,
+    //             );
+    //         }
+           
+
+    //     }
+    //     return view('content.report.neraca', compact('month', 'year', 'modal','arus'));
+
+    // }
 
     function labaRugi(Request $request)  {
         $month = isset($request->month)? $request->month : date('m');
