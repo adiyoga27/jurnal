@@ -174,7 +174,7 @@
                             </tr>
                             <tr height="30px" style="font-weight: bold">
                                 <td  colspan="2" >SALDO AKHIR KAS</td>
-                                <td  style="text-align: end">Rp. {{number_format($total, 0,',','.')}} </td>
+                                <td  style="text-align: end">Rp. {{number_format($total+$modal, 0,',','.')}} </td>
                             </tr>
                           
                         </tbody>

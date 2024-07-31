@@ -122,7 +122,6 @@
                                 </tr>
                                 <tr height="30px">
                                     <td style="text-align:right !important"></td>
-                                    <td style="text-align:right !important">{{ $a['data']['code'] }}</td>
                                     <td>{{ $a['data']['title'] }}</td>
                                     <td style="text-align:right !important">
                                         {{ number_format($a['data']['amount'], 0, ',', '.') }}</td>
@@ -171,7 +170,6 @@
                                 @foreach ($p['data'] as $item)
                                     <tr height="30px">
                                         <td style="text-align:right !important"></td>
-                                        <td style="text-align:right !important">{{ $item['code'] }}</td>
                                         <td>{{ $item['title'] }}</td>
                                         <td style="text-align:right !important"></td>
                                         @if (($item['code'] == '20101' || $item['code'] == '30102') && $item['amount'] > 0)
@@ -181,6 +179,7 @@
                                             <td style="text-align:right !important">
                                                 {{ number_format($item['amount'], 0, ',', '.') }}</td>
                                         @endif
+                                        <td style="text-align:right !important"></td>
                                         <td style="text-align:right !important"></td>
 
                                     </tr>

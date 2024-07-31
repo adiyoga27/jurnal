@@ -69,9 +69,8 @@ class ReportController extends Controller
         $month = isset($request->month)? $request->month : date('m');
         $year = isset($request->year)? $request->year : date('Y');
         $date = Carbon::parse($year."-".$month."-01");
-        $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
+        $dateBefore = $date->copy()->submonth()->endOfMonth()->format('Y-m-d');
         $datas = [];
-
         $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
             $q->where('kategori_akun', 'debit');
         })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
@@ -165,7 +164,7 @@ class ReportController extends Controller
         $month = isset($request->month)? $request->month : date('m');
         $year = isset($request->year)? $request->year : date('Y');
         $date = Carbon::parse($year."-".$month."-01");
-        $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
+        $dateBefore = $date->copy()->submonth()->endOfMonth()->format('Y-m-d');
         $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
             $q->where('kategori_akun', 'debit');
         })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
@@ -200,7 +199,7 @@ class ReportController extends Controller
         $month = isset($request->month)? $request->month : date('m');
         $year = isset($request->year)? $request->year : date('Y');
         $date = Carbon::parse($year."-".$month."-01");
-        $dateBefore = $date->copy()->subDays($month-1)->endOfMonth()->format('Y-m-d');
+        $dateBefore = $date->copy()->submonth()->endOfMonth()->format('Y-m-d');
         $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
             $q->where('kategori_akun', 'debit');
         })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
@@ -228,7 +227,37 @@ class ReportController extends Controller
         $date = Carbon::parse($year."-".$month."-01");
         $dateEnd = $date->copy()->endOfMonth()->format('Y-m-d');
         $dateStart = $date->copy()->startOfMonth()->format('Y-m-d');
+        $dateBefore = $date->copy()->submonth()->endOfMonth()->format('Y-m-d');
+        $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'debit');
+        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'kredit');
+        })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
+        $saldoAwal = $saldoDebit - $saldoKredit;
+        $prive = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        ->whereHas('akun', function($q) {
+            $q->where('kode_akun', '30102');
+        })
+        ->groupBy('kode_akun')
+        ->sum('nominal');
+        $laba = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        ->whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'debit')->where('kode_akun', '<>','30102');
+        })
+        ->groupBy('kode_akun')
+        ->sum('nominal') - Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        ->whereHas('akun', function($q) {
+            $q->where('kategori_akun', 'kredit')->where('kode_akun', '<>','30102');
+        })
+        ->groupBy('kode_akun')
+        ->sum('nominal') ;
 
+        $modalTambah =  Pengeluaran::whereHas('akun', function($q) {
+            $q->where('kode_akun', '30101');
+        })
+        ->whereDate('tgl_transaksi', ">=",  $dateStart)
+        ->whereDate('tgl_transaksi', "<=",  $dateEnd)->sum('nominal');
         $arus = [];
         $akuns = Akun::orderBy('kategori_akun', 'asc')
                     ->whereIn('sub_akun', ['Aktiva Lancar'])
@@ -241,11 +270,7 @@ class ReportController extends Controller
                 "data" =>[
                     'code' => $value->kode_akun,
                     'title' => $value->nama_akun,
-                    'amount' =>  Pengeluaran::whereHas('akun', function($q) {
-                        $q->where('kategori_akun', 'debit');
-                    })
-                    ->whereDate('tgl_transaksi', ">=",  $dateStart)
-                    ->whereDate('tgl_transaksi', "<=",  $dateEnd)->sum('nominal')
+                    'amount' =>  $laba-$prive+$modalTambah
                 ]
             ];
 
@@ -265,18 +290,11 @@ class ReportController extends Controller
                         ->whereDate('tgl_transaksi', "<=",  $dateEnd)->where('kode_akun', $value->id)->sum('nominal')
                 ];
             }
-            if($value->sub_akun == 'Modal'){
-                $modal[] =   [
-                        'code' => $value->kode_akun,
-                        'title' => $value->nama_akun,
-                        'amount' =>  Pengeluaran::whereHas('akun', function($q) {
-                            $q->where('kategori_akun', 'kredit');
-                        })
-                        ->whereDate('tgl_transaksi', ">=",  $dateStart)
-                        ->whereDate('tgl_transaksi', "<=",  $dateEnd)->where('kode_akun', $value->id)->sum('nominal')
-                ];
-            }
         }
+
+     
+
+
         $pasiva = array(
             [
                 'category' => 'Kewajiban Lancar',
@@ -284,7 +302,18 @@ class ReportController extends Controller
             ],
             [
                 'category' => 'Ekuitas',
-                'data' => $modal
+                'data' => [
+                    [
+                        'code' => '',
+                        'title' => 'Modal Awal',
+                        'amount' =>  $modalTambah,
+                    ],
+                    [
+                        'code' => '1',
+                        'title' => 'Laba ditahan',
+                        'amount' => $laba-$prive
+                    ]
+                ]
             ]
         );
         return view('content.report.neraca', compact('month', 'year', 'pasiva','aktiva'));

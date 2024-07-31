@@ -100,19 +100,25 @@ use Carbon\Carbon;
                             </tr>
                             <tr>
                                 <td>Laba Bersih</td>
-                                <td  style="text-align: end"> <u>Rp. {{number_format($laba, 0,',','.')}}</u></td>
+                                <td  style="text-align: end"> Rp. {{number_format($laba, 0,',','.')}}</td>
                             </tr>
                             <tr >
-                                <td></td>
+                                {{-- <td></td>
                                 <td  style="text-align: end"> Rp. {{number_format($modal+$laba, 0,',','.')}} </td>
-                            </tr>
+                            </tr> --}}
                             <tr height="30px">
                                 <td></td>
                                 <td  style="text-align: end"> </td>
                             </tr>
+
                             <tr style="margin-top: 100px">
                                 <td>Prive</td>
-                                <td  style="text-align: end"> <u>Rp. {{number_format($prive, 0,',','.')}}</u></td>
+                                <td  style="text-align: end">( Rp. {{number_format($prive, 0,',','.')}} )</td>
+                            </tr>
+                            <tr height="30px">
+                           
+                            <td> Penambahan Modal</td>
+                                <td  style="text-align: end"><u>Rp. {{number_format($laba - $prive, 0,',','.')}} </u></td>
                             </tr>
                             <tr>
                                 <td>Modal Akhir</td>
