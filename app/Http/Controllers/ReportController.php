@@ -227,31 +227,66 @@ class ReportController extends Controller
         $date = Carbon::parse($year."-".$month."-01");
         $dateEnd = $date->copy()->endOfMonth()->format('Y-m-d');
         $dateStart = $date->copy()->startOfMonth()->format('Y-m-d');
-        $dateBefore = $date->copy()->submonth()->endOfMonth()->format('Y-m-d');
+        $dateBefore = $date->copy()->submonth()->endOfMonth()->format('Y-m-t');
         $saldoDebit = Pengeluaran::whereHas('akun', function($q) {
             $q->where('kategori_akun', 'debit');
         })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
         $saldoKredit = Pengeluaran::whereHas('akun', function($q) {
             $q->where('kategori_akun', 'kredit');
         })->whereDate('tgl_transaksi', "<=",  $dateBefore)->sum('nominal');
-        $saldoAwal = $saldoDebit - $saldoKredit;
+        $saldo = $saldoDebit - $saldoKredit;
         $prive = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
         ->whereHas('akun', function($q) {
             $q->where('kode_akun', '30102');
         })
         ->groupBy('kode_akun')
         ->sum('nominal');
-        $laba = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
-        ->whereHas('akun', function($q) {
-            $q->where('kategori_akun', 'debit')->where('kode_akun', '<>','30102');
-        })
-        ->groupBy('kode_akun')
-        ->sum('nominal') - Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
-        ->whereHas('akun', function($q) {
-            $q->where('kategori_akun', 'kredit')->where('kode_akun', '<>','30102');
-        })
-        ->groupBy('kode_akun')
-        ->sum('nominal') ;
+
+
+        // $debit =  Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        // ->whereHas('akun', function($q) {
+        //     $q->where('kategori_akun', 'debit');
+        // })
+        // ->groupBy('kode_akun')
+        // ->sum('nominal');
+        
+        // $kredit  = Pengeluaran::whereMonth('tgl_transaksi', $month)->whereYear('tgl_transaksi', $year)
+        // ->whereHas('akun', function($q) {
+        //     $q->where('kategori_akun', 'kredit');
+        // })
+        // ->groupBy('kode_akun')
+        // ->sum('nominal');
+        $laba = 0;
+        for ($i=1; $i <= $date->copy()->endOfMonth()->format('d') ; $i++) { 
+            # code...
+            $formatedDateSearch = $date->copy()->startOfMonth()->addDays($i-1)->format('Y-m-d');
+            $totalsByKodeAkun = Pengeluaran::whereDate('tgl_transaksi', $formatedDateSearch)
+            ->groupBy('kode_akun')
+            ->selectRaw('kode_akun, SUM(nominal) as total_sum')
+            ->orderBy('id', 'asc')
+            ->get();
+
+            if(count($totalsByKodeAkun) >0 ){
+                
+            
+                foreach ($totalsByKodeAkun as $total) {
+                        $akun = Akun::where('id', $total->kode_akun)->first();
+                        if($akun->kategori_akun == 'debit'){
+                            $laba = $laba + $total->total_sum;
+                            
+                        }else{
+                            $laba = $laba - $total->total_sum;
+
+                      
+                        }
+                    
+                }
+            }
+        }
+
+
+
+
 
         $modalTambah =  Pengeluaran::whereHas('akun', function($q) {
             $q->where('kode_akun', '30101');
@@ -270,7 +305,7 @@ class ReportController extends Controller
                 "data" =>[
                     'code' => $value->kode_akun,
                     'title' => $value->nama_akun,
-                    'amount' =>  $laba-$prive+$modalTambah
+                    'amount' =>  $laba + $saldo
                 ]
             ];
 
@@ -306,12 +341,12 @@ class ReportController extends Controller
                     [
                         'code' => '',
                         'title' => 'Modal Awal',
-                        'amount' =>  $modalTambah,
+                        'amount' =>  $modalTambah + $saldo,
                     ],
                     [
                         'code' => '1',
                         'title' => 'Laba ditahan',
-                        'amount' => $laba
+                        'amount' => $laba-$modalTambah-$prive
                     ]
                 ]
             ]
