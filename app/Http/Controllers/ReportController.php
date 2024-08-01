@@ -311,7 +311,7 @@ class ReportController extends Controller
                     [
                         'code' => '1',
                         'title' => 'Laba ditahan',
-                        'amount' => $laba-$prive
+                        'amount' => $laba
                     ]
                 ]
             ]
